@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             x:Class="Interfaces.ViewPaciente.EvolucionPaciente">
+
+    <!-- Recurso de Colores -->
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <!-- Definición de los colores que se utilizarán en la vista -->
+            <Color x:Key="PrimaryColor">#2C7A7B</Color>
+            <!-- Color principal para elementos destacados -->
+            <Color x:Key="SecondaryColor">#6366F1</Color>
+            <!-- Color secundario para elementos menos destacados -->
+            <Color x:Key="BackgroundLight">#FFFFFF</Color>
+            <!-- Fondo blanco puro -->
+            <Color x:Key="TextDark">#1F2937</Color>
+            <!-- Texto oscuro para buen contraste -->
+            <Color x:Key="TextSecondary">#6B7280</Color>
+            <!-- Texto secundario más claro -->
+            <Color x:Key="DisabledBackground">#F3F4F6</Color>
+            <!-- Fondo de elementos deshabilitados -->
+            <Color x:Key="DisabledText">#9CA3AF</Color>
+            <!-- Texto de elementos deshabilitados -->
+            <Color x:Key="DangerColor">#EF4444</Color>
+            <!-- Rojo usado para advertencias o alertas -->
+            <Color x:Key="CardBackground">#FFFFFF</Color>
+            <!-- Fondo de las tarjetas -->
+            <Color x:Key="CardBorder">#E5E7EB</Color>
+            <!-- Borde de las tarjetas -->
+            <Color x:Key="CardShadow">#00000010</Color>
+            <!-- Sombra sutil para las tarjetas -->
+
+            <!-- Estilos para los controles -->
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextDark}" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="Margin" Value="0,0,0,5"/>
+            </Style>
+
+            <Style TargetType="Editor" x:Key="BaseEditor">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundLight}"/>
+                <Setter Property="TextColor" Value="{StaticResource TextDark}"/>
+                <Setter Property="PlaceholderColor" Value="{StaticResource TextSecondary}"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Margin" Value="0,0,0,15"/>
+                <Setter Property="AutoSize" Value="TextChanges"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="PrimaryButton">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Margin" Value="0,10"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="DangerButton" BasedOn="{StaticResource PrimaryButton}">
+                <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <!-- Layout Principal -->
+    <Grid>
+        <!-- Contenedor de desplazamiento -->
+        <ScrollView>
+            <Frame CornerRadius="15" Padding="25" Margin="20"
+                   BackgroundColor="White" BorderColor="#4299E1"
+                   HasShadow="True">
+
+                <VerticalStackLayout Spacing="15">
+                    <!-- Título principal -->
+                    <Label Text="Notas de Evolución" 
+                           FontSize="24" FontAttributes="Bold" 
+                           HorizontalOptions="Center"
+                           TextColor="{StaticResource PrimaryColor}"
+                           Margin="0,0,0,20"/>
+
+                    <VerticalStackLayout Spacing="5">
+                        <!-- Sección para seleccionar la fecha -->
+                        <Label Text="Fecha:" FontAttributes="Bold"/>
+                        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                            <Label Text="📅" VerticalOptions="Center" FontSize="16"/>
+                            <!-- Selector de fecha con binding bidireccional a FechaSeleccionada -->
+                            <DatePicker x:Name="fechaPicker" 
+                               Date="{Binding FechaSeleccionada, Source={x:Static sys:DateTime.Today}}"
+                               TextColor="{StaticResource TextDark}"
+                               FontSize="16"
+                               HorizontalOptions="Start"
+                               BackgroundColor="Transparent"
+                               MinimumDate="01/01/2000"
+                               MaximumDate="01/01/2100"/>
+                        </HorizontalStackLayout>
+                        <!-- Línea separadora -->
+                        <BoxView HeightRequest="1" 
+                             Color="{StaticResource TextSecondary}" 
+                             Margin="0,5"/>
+                    </VerticalStackLayout>
+
+                    <!-- Sección para la nota de evolución -->
+                    <Label Text="Nota de Evolución:" FontAttributes="Bold"/>
+                    <Frame CornerRadius="10"
+                           Padding="10"
+                           BorderColor="{StaticResource SecondaryColor}"
+                           BackgroundColor="{StaticResource BackgroundLight}"
+                           HasShadow="True">
+                        <!-- Editor de texto para la nota de evolución -->
+                        <Editor x:Name="notaEditor" 
+                                Placeholder="Describa la evolución del paciente..."
+                                Style="{StaticResource BaseEditor}"
+                                HeightRequest="150"/>
+                    </Frame>
+
+                    <!-- Botón para guardar la evolución -->
+                    <Button Text="Guardar Evolución" 
+                            Style="{StaticResource PrimaryButton}"
+                            Clicked="guardarEvolucionClicked"/>
+
+                    <!-- Línea separadora -->
+                    <BoxView HeightRequest="1" 
+                             Color="{StaticResource TextSecondary}" 
+                             Margin="0,20"/>
+
+                    <!-- Título de las evoluciones anteriores -->
+                    <Label Text="Evoluciones anteriores:" 
+                           FontAttributes="Bold" 
+                           TextColor="{StaticResource TextDark}" 
+                           FontSize="18"
+                           Margin="0,10"/>
+
+                    <!-- Contenedor para mostrar las evoluciones anteriores -->
+                    <StackLayout x:Name="layoutEvoluciones" Spacing="15" Margin="0,0,0,20"/>
+
+                </VerticalStackLayout>
+            </Frame>
+        </ScrollView>
+    </Grid>
+</ContentView>

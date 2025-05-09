@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Vista para consultar usuarios en el panel de administración -->
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Interfaces.ViewAdministrador.ConsultarUsuarios">
+
+    <!-- Permite desplazamiento si no caben todos los elementos -->
+    <ScrollView>
+
+        <!-- Contenedor principal con padding y fondo suave -->
+        <VerticalStackLayout Padding="15" Spacing="15" BackgroundColor="#F5F9FF">
+
+            <!-- Encabezado con fondo destacado y texto en blanco -->
+            <Frame
+                CornerRadius="12"
+                BackgroundColor="#2A7FBA"
+                Padding="15"
+                HorizontalOptions="Fill"
+                HasShadow="True">
+                <Label
+                    Text="Consulta de Usuarios"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    HorizontalOptions="Center" />
+            </Frame>
+
+            <!-- Subtítulo explicativo -->
+            <Label
+                Text="Listado completo de usuarios registrados en el sistema"
+                FontSize="14"
+                TextColor="#555"
+                HorizontalOptions="Center" />
+
+            <!-- Buscador de usuarios por nombre -->
+            <SearchBar x:Name="searchBarUsuarios"
+                       Placeholder="Buscar usuario por nombre..."
+                       FontSize="16"
+                       BackgroundColor="White"
+                       TextColor="#2C3E50"
+                       SearchButtonPressed="OnBuscarUsuario"
+                       TextChanged="OnSearchTextChanged" />
+
+            <!-- 
+                CollectionView con Binding:
+                - ItemsSource="{Binding Usuarios}" enlaza la colección de usuarios
+                  desde el ViewModel para poblar dinámicamente la lista.
+                - SelectionMode="None" deshabilita la selección.
+            -->
+            <CollectionView
+                ItemsSource="{Binding Usuarios}"
+                SelectionMode="None">
+
+                <!-- Plantilla de cada elemento de usuario -->
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame
+                            Padding="15"
+                            Margin="5,8"
+                            CornerRadius="12"
+                            BackgroundColor="White"
+                            HasShadow="True"
+                            BorderColor="#E1E8ED">
+                            <VerticalStackLayout Spacing="8">
+
+                                <!-- Nombre del usuario (Binding Nombre) -->
+                                <HorizontalStackLayout Spacing="8">
+                                    <Label Text="👤" FontSize="14" VerticalOptions="Center"/>
+                                    <Label
+                                        Text="{Binding Nombre}"
+                                        FontSize="16"
+                                        TextColor="#2A3F54"
+                                        FontAttributes="Bold"/>
+                                </HorizontalStackLayout>
+
+                                <!-- Apellidos del usuario (Binding Apellidos) -->
+                                <HorizontalStackLayout Spacing="8">
+                                    <Label Text="📋" FontSize="14" VerticalOptions="Center"/>
+                                    <Label
+                                        Text="{Binding Apellidos}"
+                                        FontSize="15"
+                                        TextColor="#4A6FA5"/>
+                                </HorizontalStackLayout>
+
+                                <!-- Email del usuario (Binding Email) -->
+                                <HorizontalStackLayout Spacing="8">
+                                    <Label Text="✉️" FontSize="14" VerticalOptions="Center"/>
+                                    <Label
+                                        Text="{Binding Email}"
+                                        FontSize="15"
+                                        TextColor="#4A6FA5"/>
+                                </HorizontalStackLayout>
+
+                                <!-- 
+                                    Contraseña visible/oculta:
+                                    - Dos layouts con IsVisible enlazado al Switch (passwordToggle).
+                                    - El primer layout muestra el Binding Contrasenia cuando IsToggled=true.
+                                    - El segundo layout muestra texto vacío cuando IsToggled=false,
+                                      usando un InverseBooleanConverter para invertir la visibilidad.
+                                -->
+                                <Grid>
+                                    <HorizontalStackLayout
+                                        Spacing="8"
+                                        IsVisible="{Binding Source={x:Reference passwordToggle}, Path=IsToggled}">
+                                        <Label Text="🔒" FontSize="14" VerticalOptions="Center"/>
+                                        <Label
+                                            Text="{Binding Contrasenia}"
+                                            FontSize="14"
+                                            TextColor="LightGray"
+                                            FontAttributes="Italic"/>
+                                    </HorizontalStackLayout>
+
+                                    <HorizontalStackLayout
+                                        Spacing="8"
+                                        IsVisible="{Binding Source={x:Reference passwordToggle}, Path=IsToggled, Converter={StaticResource InverseBooleanConverter}}">
+                                        <Label Text="🔒" FontSize="14" VerticalOptions="Center"/>
+                                        <Label
+                                            Text=""
+                                            FontSize="14"
+                                            TextColor="LightGray"
+                                            FontAttributes="Italic"/>
+                                    </HorizontalStackLayout>
+                                </Grid>
+
+                                <!-- Toggle para alternar la visibilidad de la contraseña -->
+                                <HorizontalStackLayout Spacing="5" HorizontalOptions="End">
+                                    <Label
+                                        Text="Mostrar contraseña"
+                                        FontSize="12"
+                                        TextColor="Black"
+                                        VerticalOptions="Center"/>
+                                    <Switch
+                                        x:Name="passwordToggle"
+                                        ThumbColor="#2A7FBA"
+                                        OnColor="#2A7FBA"/>
+                                </HorizontalStackLayout>
+
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <!-- EmptyView cuando la lista está vacía -->
+                <CollectionView.EmptyView>
+                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
+                        <Label
+                            Text="No se encontraron usuarios"
+                            FontSize="16"
+                            TextColor="#666"
+                            HorizontalOptions="Center"/>
+                        <Label
+                            Text="Utilice el botón de refrescar o intente más tarde"
+                            FontSize="14"
+                            TextColor="#999"
+                            HorizontalOptions="Center"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <!-- 
+                Pie de página con Binding Usuarios.Count:
+                Muestra dinámicamente el total de usuarios en la lista enlazada.
+            -->
+            <Frame
+                CornerRadius="10"
+                BackgroundColor="#E1E8ED"
+                Padding="10"
+                HasShadow="False">
+                <HorizontalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Label Text="ℹ️" FontSize="14"/>
+                    <Label
+                        Text="Total de usuarios:"
+                        FontSize="14"
+                        TextColor="#555"/>
+                    <Label
+                        Text="{Binding Usuarios.Count}"
+                        FontSize="14"
+                        TextColor="#2A7FBA"
+                        FontAttributes="Bold"/>
+                </HorizontalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

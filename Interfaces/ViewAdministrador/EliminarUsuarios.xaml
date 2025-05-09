@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Vista para eliminar usuarios en el panel de administración -->
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Interfaces.ViewAdministrador.EliminarUsuarios">
+
+    <!-- Permite desplazamiento si hay muchos usuarios -->
+    <ScrollView>
+        <!-- Contenedor principal con padding, espaciado y fondo claro -->
+        <VerticalStackLayout Padding="15" Spacing="10" BackgroundColor="#F5F9FF">
+
+            <!-- Encabezado destacado con título -->
+            <Frame
+                CornerRadius="12"
+                BackgroundColor="#2A7FBA"
+                Padding="15"
+                HorizontalOptions="Fill"
+                HasShadow="True">
+                <Label
+                    Text="Gestión de Usuarios"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    HorizontalOptions="Center" />
+            </Frame>
+
+            <!-- Instrucción al usuario -->
+            <Label
+                Text="Seleccione un usuario para eliminarlo del sistema"
+                FontSize="14"
+                TextColor="#555"
+                Margin="0,0,0,10"
+                HorizontalOptions="Center" />
+
+            <!-- Buscador de usuarios por nombre -->
+            <SearchBar x:Name="searchBarUsuarios"
+                       Placeholder="Buscar usuario por nombre…"
+                       FontSize="16"
+                       BackgroundColor="White"
+                       TextColor="#2C3E50"
+                       SearchButtonPressed="OnBuscarUsuario"
+                       TextChanged="OnSearchTextChanged" />
+
+
+            <!-- 
+                CollectionView con Binding:
+                - ItemsSource="{Binding Usuarios}" enlaza la lista de usuarios desde el ViewModel.
+                - SelectionMode="None" deshabilita la selección de items.
+            -->
+            <CollectionView
+                ItemsSource="{Binding Usuarios}"
+                SelectionMode="None">
+
+                <!-- Plantilla de cada usuario -->
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame
+                            Padding="15"
+                            Margin="5,8"
+                            CornerRadius="12"
+                            BackgroundColor="White"
+                            HasShadow="True"
+                            BorderColor="#E1E8ED">
+                            <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+
+                                <!-- Datos del usuario -->
+                                <VerticalStackLayout Grid.Column="0" Spacing="6">
+
+                                    <!-- Nombre con StringFormat para formateo opcional -->
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="👤" FontSize="14"/>
+                                        <Label
+                                            Text="{Binding Nombre, StringFormat='{0}'}"
+                                            FontSize="16"
+                                            TextColor="#2A3F54"
+                                            FontAttributes="Bold"/>
+                                    </HorizontalStackLayout>
+
+                                    <!-- Apellidos -->
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="📋" FontSize="14"/>
+                                        <Label
+                                            Text="{Binding Apellidos, StringFormat='{0}'}"
+                                            FontSize="15"
+                                            TextColor="#4A6FA5"/>
+                                    </HorizontalStackLayout>
+
+                                    <!-- Email -->
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="✉️" FontSize="14"/>
+                                        <Label
+                                            Text="{Binding Email, StringFormat='{0}'}"
+                                            FontSize="15"
+                                            TextColor="#4A6FA5"/>
+                                    </HorizontalStackLayout>
+
+                                    <!-- Contraseña oculta por defecto para seguridad -->
+                                    <HorizontalStackLayout Spacing="5" IsVisible="False">
+                                        <Label Text="🔒" FontSize="14"/>
+                                        <Label
+                                            Text="{Binding Contrasenia, StringFormat='{0}'}"
+                                            FontSize="14"
+                                            TextColor="LightGray"
+                                            FontAttributes="Italic"/>
+                                    </HorizontalStackLayout>
+
+                                </VerticalStackLayout>
+
+                                <!-- Botón para eliminar al usuario -->
+                                <Button
+                                    Grid.Column="1"
+                                    Text="Eliminar"
+                                    BackgroundColor="#E74C3C"
+                                    TextColor="White"
+                                    CornerRadius="8"
+                                    WidthRequest="100"
+                                    HeightRequest="40"
+                                    VerticalOptions="Center"
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Clicked="EliminarUsuarioClick" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <!-- Mensaje si no hay usuarios -->
+                <CollectionView.EmptyView>
+                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
+                        <Label
+                            Text="No hay usuarios registrados"
+                            FontSize="16"
+                            TextColor="#666"
+                            HorizontalOptions="Center"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <!-- Advertencia de acción irreversible -->
+            <Label
+                Text="⚠️ Esta acción no se puede deshacer. Eliminar un usuario borrará todos sus datos asociados."
+                FontSize="12"
+                TextColor="#E74C3C"
+                Margin="10"
+                HorizontalOptions="Center"
+                FontAttributes="Italic"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Interfaces.ViewAdministrador.ViewPrincipalAdmin"
+    Title="Panel de Administración"
+    BackgroundColor="#F5F9FF">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Header con título y botón de logout -->
+            <Grid ColumnDefinitions="*,Auto,*" VerticalOptions="Start">
+                <!-- Título principal (centrado en el grid) -->
+                <Label Text="Panel de Administración"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="#1565C0"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+
+                <!-- Botón de Logout (alineado a la derecha) -->
+                <Frame Grid.Column="2"
+                       Padding="10"
+                       CornerRadius="12"
+                       BackgroundColor="#E3F2FD"
+                       BorderColor="#90CAF9"
+                       HasShadow="False"
+                       HeightRequest="40"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLogoutClicked" />
+                    </Frame.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="5">
+                        <Image Source="logout.png" HeightRequest="20" />
+                        <Label Text="Cerrar sesión"
+                               FontSize="14"
+                               TextColor="#0D47A1"
+                               VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+                </Frame>
+            </Grid>
+            <!-- Subtítulo -->
+            <Label Text="Gestión de cuentas de usuario"
+                   FontSize="16"
+                   TextColor="#555"
+                   HorizontalOptions="Center" />
+
+            <!-- Grid de opciones -->
+            <Grid ColumnDefinitions="*" RowDefinitions="*,*,*" RowSpacing="20">
+
+                <!-- Borrar Usuarios -->
+                <Frame Grid.Row="0"
+                       Padding="15"
+                       CornerRadius="15"
+                       BackgroundColor="White"
+                       HasShadow="True">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBorrarUsuariosClicked" />
+                    </Frame.GestureRecognizers>
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Image Source="eliminar.png" HeightRequest="50" />
+                        <Label Text="Borrar Usuarios"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               TextColor="#D32F2F" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Consultar Usuarios -->
+                <Frame Grid.Row="1"
+                       Padding="15"
+                       CornerRadius="15"
+                       BackgroundColor="White"
+                       HasShadow="True">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnConsultarUsuariosClicked" />
+                    </Frame.GestureRecognizers>
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Image Source="buscar.png" HeightRequest="50" />
+                        <Label Text="Consultar Usuarios"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               TextColor="#2E7D32" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Activar / Desactivar Usuarios -->
+                <Frame Grid.Row="2"
+                       Padding="15"
+                       CornerRadius="15"
+                       BackgroundColor="White"
+                       HasShadow="True">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnActivarDesactivarClicked" />
+                    </Frame.GestureRecognizers>
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Image Source="activardesactivar.png" HeightRequest="50" />
+                        <Label Text="Activar / Desactivar"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               TextColor="#FF8F00" />
+                    </VerticalStackLayout>
+                </Frame>
+
+            </Grid>
+
+            <!-- Pie -->
+            <Label Text="Sistema de Administración Sanitaria v1.0"
+                   FontSize="12"
+                   TextColor="#90A4AE"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

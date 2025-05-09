@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Interfaces.ViewLogin.Login"
+    Title="Login"
+    BackgroundColor="White">
+
+    <ScrollView>
+        <StackLayout Padding="30" Spacing="0" VerticalOptions="Center">
+
+            <StackLayout.Resources>
+                <ResourceDictionary>
+                    <Color x:Key="Primary">#2C7A7B</Color>
+                    <Color x:Key="Secondary">#38B2AC</Color>
+                    <Color x:Key="White">#FFFFFF</Color>
+                    <Color x:Key="TextDark">#2D3748</Color>
+                    <Color x:Key="TextSecondary">#718096</Color>
+                    <Color x:Key="BackgroundLight">#EDF2F7</Color>
+                </ResourceDictionary>
+            </StackLayout.Resources>
+
+            <!-- Encabezado -->
+            <StackLayout Spacing="10" HorizontalOptions="Center" Margin="0,0,0,40">
+                <Image
+                    Source="portadasalud.png"
+                    WidthRequest="130"
+                    HeightRequest="130"
+                    Aspect="AspectFit"/>
+                <Label
+                    Text="AOP MedicTrack"
+                    FontSize="30"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    TextColor="{StaticResource Primary}" />
+                <Label
+                    Text="Gestión de pacientes especializada"
+                    FontSize="15"
+                    HorizontalOptions="Center"
+                    FontAttributes="Italic"
+                    TextColor="{StaticResource TextSecondary}" />
+            </StackLayout>
+
+            <!-- Formulario -->
+            <Frame
+                BackgroundColor="{StaticResource White}"
+                CornerRadius="20"
+                Padding="30"
+                HasShadow="True"
+                BorderColor="{StaticResource Secondary}"
+                Margin="0,0,0,30">
+
+                <StackLayout Spacing="20">
+
+                    <!-- Campo correo -->
+                    <StackLayout>
+                        <Label
+                            Text="Correo electrónico"
+                            TextColor="{StaticResource TextDark}"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            Margin="0,0,0,5" />
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="imagenemail.png" WidthRequest="22" HeightRequest="22" VerticalOptions="Center" />
+                            <Entry
+                                x:Name="CorreoEntry"
+                                Grid.Column="1"
+                                Placeholder="ejemplo@correo.com"
+                                Keyboard="Email"
+                                BackgroundColor="{StaticResource BackgroundLight}"
+                                TextColor="{StaticResource TextDark}"
+                                PlaceholderColor="{StaticResource TextSecondary}"
+                                HeightRequest="50"
+                                FontSize="15"
+                                Margin="5,0" />
+                        </Grid>
+                    </StackLayout>
+
+                    <!-- Campo contraseña -->
+                    <StackLayout>
+                        <Label
+                            Text="Contraseña"
+                            TextColor="{StaticResource TextDark}"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            Margin="0,0,0,5" />
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Image Source="imagencontrasenia.png" WidthRequest="22" HeightRequest="22" VerticalOptions="Center" />
+                            <Entry
+                                x:Name="ContraseniaEntry"
+                                Grid.Column="1"
+                                Placeholder="••••••••"
+                                IsPassword="True"
+                                BackgroundColor="{StaticResource BackgroundLight}"
+                                TextColor="{StaticResource TextDark}"
+                                PlaceholderColor="{StaticResource TextSecondary}"
+                                HeightRequest="50"
+                                FontSize="15"
+                                Margin="5,0" />
+
+                        </Grid>
+                    </StackLayout>
+
+                    <!-- Botón iniciar sesión -->
+                    <Button
+                        Text="Iniciar Sesión"
+                        Clicked="OnLoginClicked"
+                        Margin="0,20,0,0"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="{StaticResource White}"
+                        CornerRadius="15"
+                        HeightRequest="50"
+                        FontSize="16"
+                        FontAttributes="Bold" />
+
+                    <!-- Opción de registro -->
+                    <StackLayout Spacing="5" HorizontalOptions="Center">
+                        <Label
+                            Text="¿No tienes una cuenta?"
+                            FontSize="15"
+                            TextColor="{StaticResource TextSecondary}"
+                            HorizontalOptions="Center" />
+                        <Button
+                            Text="Registrarse"
+                            Clicked="OnRegisterClicked"
+                            BackgroundColor="{StaticResource Secondary}"
+                            TextColor="{StaticResource White}"
+                            CornerRadius="15"
+                            HeightRequest="45"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            WidthRequest="200" />
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

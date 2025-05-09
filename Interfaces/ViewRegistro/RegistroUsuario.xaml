@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Interfaces.ViewRegistro.RegistroUsuario"
+             BackgroundColor="#F0F4F8">
+
+    <ScrollView>
+        <Grid Padding="25">
+            <Frame
+                CornerRadius="20"
+                BackgroundColor="White"
+                BorderColor="#D6E4F0"
+                HasShadow="True"
+                Padding="25"
+                Margin="0,40">
+
+                <StackLayout Spacing="20">
+
+                    <!-- Título -->
+                    <Label
+                        Text="¡Bienvenido! Crea tu cuenta"
+                        FontSize="30"
+                        FontAttributes="Bold"
+                        FontFamily="Sans-Serif"
+                        TextColor="#1A4D8C"
+                        HorizontalOptions="Center"
+                        Margin="0,0,0,10" />
+
+                    <!-- Nombre -->
+                    <Frame Padding="0" CornerRadius="10" HasShadow="False" BackgroundColor="#F3F4F6" BorderColor="#E5E7EB">
+                        <Entry
+                            x:Name="EntryNombre"
+                            Placeholder="Nombre"
+                            BackgroundColor="Transparent"
+                            PlaceholderColor="#9CA3AF"
+                            TextColor="#1F2937"
+                            HeightRequest="50"
+                            FontSize="16" />
+                    </Frame>
+
+                    <!-- Apellidos -->
+                    <Frame Padding="0" CornerRadius="10" HasShadow="False" BackgroundColor="#F3F4F6" BorderColor="#E5E7EB">
+                        <Entry
+                            x:Name="EntryApellidos"
+                            Placeholder="Apellidos"
+                            BackgroundColor="Transparent"
+                            PlaceholderColor="#9CA3AF"
+                            TextColor="#1F2937"
+                            HeightRequest="50"
+                            FontSize="16" />
+                    </Frame>
+
+                    <!-- Correo -->
+                    <Frame Padding="0" CornerRadius="10" HasShadow="False" BackgroundColor="#F3F4F6" BorderColor="#E5E7EB">
+                        <Entry
+                            x:Name="EntryEmail"
+                            Placeholder="Correo electrónico"
+                            Keyboard="Email"
+                            BackgroundColor="Transparent"
+                            PlaceholderColor="#9CA3AF"
+                            TextColor="#1F2937"
+                            HeightRequest="50"
+                            FontSize="16" />
+                    </Frame>
+
+                    <!-- Contraseña -->
+                    <Frame Padding="0" CornerRadius="10" HasShadow="False" BackgroundColor="#F3F4F6" BorderColor="#E5E7EB">
+                        <Grid ColumnDefinitions="*,Auto" HeightRequest="50">
+                            <Entry x:Name="EntryContrasenia"
+                                   Grid.Column="0"
+                                   Placeholder="Contraseña"
+                                   IsPassword="True"
+                                   BackgroundColor="Transparent"
+                                   PlaceholderColor="#9CA3AF"
+                                   TextColor="#1F2937"
+                                   FontSize="16"
+                                   VerticalOptions="Center" />
+
+                            <ImageButton x:Name="BtnTogglePwd"
+                                         Grid.Column="1"
+                                         Source="visible.png"
+                                         BackgroundColor="Transparent"
+                                         Clicked="TogglePasswordVisibility"
+                                         WidthRequest="40"
+                                         HeightRequest="40"
+                                         VerticalOptions="Center"
+                                         Margin="5,0" />
+                        </Grid>
+                    </Frame>
+
+                    <!-- Botón registrarse -->
+                    <Button
+                        Text="Registrarse"
+                        BackgroundColor="#1A4D8C"
+                        TextColor="White"
+                        FontSize="16"
+                        CornerRadius="12"
+                        HeightRequest="50"
+                        FontAttributes="Bold"
+                        Margin="0,20,0,0"
+                        Clicked="RegistrarUsuarioClicked" />
+
+                    <!-- Volver -->
+                    <Button
+                        Text="← Volver al login"
+                        Clicked="VolverLoginClicked"
+                        BackgroundColor="Transparent"
+                        BorderColor="#1A4D8C"
+                        TextColor="#1A4D8C"
+                        CornerRadius="10"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="45"
+                        WidthRequest="180"
+                        HorizontalOptions="Center" />
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

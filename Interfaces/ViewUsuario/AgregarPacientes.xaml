@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Vista para registrar nuevos pacientes -->
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Interfaces.ViewUsuario.AgregarPacientes"
+    Title="Registro de Pacientes"
+    BackgroundColor="#F8F9FA">
+
+    <!-- Permite desplazamiento en pantallas pequeñas -->
+    <ScrollView>
+        <!-- Contenedor principal con padding y espaciado -->
+        <VerticalStackLayout Padding="25" Spacing="20">
+            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start">
+                <Frame
+                    BackgroundColor="#D1F2EB"
+                    Padding="10"
+                    CornerRadius="8"
+                    HasShadow="False"
+                    Margin="0,0,0,10"
+                    Grid.ColumnSpan="2">
+                    <Label
+                        x:Name="labelBienvenida"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="#117864"
+                        HorizontalOptions="Center"
+                        Text="Bienvenido/a, Doctor/a" />
+                </Frame>
+
+                <!-- Botón de Logout - Versión discreta -->
+                <Frame Grid.Column="1"
+                       Padding="10"
+                       CornerRadius="12"
+                       BackgroundColor="Transparent"
+                       BorderColor="#B2DFDB"
+                       HasShadow="False"
+                       HeightRequest="40"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End"
+                       Margin="0,0,10,10">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLogoutClicked" />
+                    </Frame.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="5">
+                        <Image Source="logout.png" HeightRequest="20" />
+                        <Label Text="Cerrar sesión"
+                               FontSize="14"
+                               TextColor="#2C7A7B"
+                               VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+                </Frame>
+            </Grid>
+            <!-- Encabezado con fondo destacado -->
+            <Frame
+                CornerRadius="12"
+                BackgroundColor="#2C7A7B"
+                Padding="15"
+                HorizontalOptions="Fill"
+                HasShadow="True">
+                <Label
+                    Text="Registro de Paciente"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    HorizontalOptions="Center" />
+            </Frame>
+
+            <!-- Tarjeta blanca que contiene el formulario -->
+            <Frame
+                CornerRadius="12"
+                BackgroundColor="White"
+                Padding="20"
+                HasShadow="True">
+                <VerticalStackLayout Spacing="15">
+
+                    <!-- Campo de nombre -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Text="Nombre del Paciente:"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="#2C3E50" />
+                        <Entry
+                            x:Name="entryNombre"
+                            Placeholder="Ej: Juan Carlos"
+                            FontSize="16"
+                            BackgroundColor="#F8F9FA"
+                            TextColor="#2C3E50"
+                            ClearButtonVisibility="WhileEditing" />
+                    </VerticalStackLayout>
+
+                    <!-- Campo de apellidos -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Text="Apellidos:"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="#2C3E50" />
+                        <Entry
+                            x:Name="entryApellidos"
+                            Placeholder="Ej: Pérez García"
+                            FontSize="16"
+                            BackgroundColor="#F8F9FA"
+                            TextColor="#2C3E50"
+                            ClearButtonVisibility="WhileEditing" />
+                    </VerticalStackLayout>
+
+                    <!-- Campo de edad (solo números) -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Text="Edad:"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="#2C3E50" />
+                        <Entry
+                            x:Name="entryEdad"
+                            Placeholder="Ej: 45"
+                            Keyboard="Numeric"
+                            FontSize="16"
+                            BackgroundColor="#F8F9FA"
+                            TextColor="#2C3E50" />
+                    </VerticalStackLayout>
+
+                    <!-- Campo de DNI/NIE -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Text="DNI/NIE:"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="#2C3E50" />
+                        <Entry
+                            x:Name="entryDni"
+                            Placeholder="Ej: 12345678X"
+                            FontSize="16"
+                            BackgroundColor="#F8F9FA"
+                            TextColor="#2C3E50"
+                            ClearButtonVisibility="WhileEditing"
+                            TextChanged="OnDniTextChanged"/>
+                    </VerticalStackLayout>
+
+                    <!-- Selector de grupo sanguíneo -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Text="Grupo Sanguíneo:"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="#2C3E50" />
+                        <Picker
+                            x:Name="pickerGrupoSanguineo"
+                            Title="Seleccione el grupo"
+                            FontSize="16"
+                            BackgroundColor="#F8F9FA"
+                            TextColor="#2C3E50"
+                            HorizontalOptions="Fill">
+                            <!-- Opciones de grupo -->
+                            <Picker.Items>
+                                <x:String>A+</x:String>
+                                <x:String>A-</x:String>
+                                <x:String>B+</x:String>
+                                <x:String>B-</x:String>
+                                <x:String>AB+</x:String>
+                                <x:String>AB-</x:String>
+                                <x:String>O+</x:String>
+                                <x:String>O-</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </VerticalStackLayout>
+
+                    <!-- Selector de fecha de ingreso -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Text="Fecha de Ingreso:"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="#2C3E50" />
+                        <DatePicker
+                            x:Name="datePickerIngreso"
+                            Format="dd/MM/yyyy"
+                            BackgroundColor="#F8F9FA"
+                            TextColor="#2C3E50"
+                            HorizontalOptions="Fill" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botón para guardar datos del paciente -->
+            <Button
+                Text="GUARDAR PACIENTE"
+                FontSize="18"
+                FontAttributes="Bold"
+                BackgroundColor="#27AE60"
+                TextColor="White"
+                CornerRadius="10"
+                Padding="20,15"
+                Margin="0,10"
+                Clicked="OnGuardarPacienteClicked" />
+
+            <!-- Nota legal sobre protección de datos -->
+            <Label
+                Text="Todos los datos serán tratados conforme a la ley de protección de datos"
+                FontSize="12"
+                FontAttributes="Italic"
+                TextColor="#7F8C8D"
+                HorizontalOptions="Center" />
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

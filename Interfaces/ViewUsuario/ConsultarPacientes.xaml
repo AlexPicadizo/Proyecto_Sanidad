@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Vista para consultar y gestionar pacientes -->
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Interfaces.ViewUsuario.ConsultarPacientes"
+    Title="Consulta de Pacientes"
+    BackgroundColor="#F5F9FC">
+
+    <!-- ScrollView para permitir desplazamiento vertical -->
+    <ScrollView>
+        <VerticalStackLayout Padding="25" Spacing="20">
+
+            <!-- Encabezado con título -->
+            <Frame
+                CornerRadius="12"
+                BackgroundColor="#2C7A7B"
+                Padding="15"
+                HorizontalOptions="Fill"
+                HasShadow="True">
+                <Label
+                    Text="Listado de Pacientes"
+                    TextColor="White"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center" />
+            </Frame>
+
+            <!-- RefreshView que permite recargar la lista tirando hacia abajo -->
+            <!-- IsRefreshing enlaza a la propiedad bool del Modelo -->
+            <!-- Command enlaza al ICommand RefreshCommand del Modelo -->
+            <RefreshView
+                IsRefreshing="{Binding IsRefreshing}"
+                Command="{Binding RefreshCommand}"
+                Margin="0,10,0,0">
+
+                <!-- CollectionView para mostrar la colección de pacientes -->
+                <!-- ItemsSource enlazada a la colección Pacientes del Modelo -->
+                <CollectionView
+                    x:Name="collectionViewPacientes"
+                    ItemsSource="{Binding PacientesCollection}"
+                    SelectionMode="None"
+                    Margin="20,10,20,20">
+
+                    <!-- Layout vertical con espaciado entre elementos -->
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="15" />
+                    </CollectionView.ItemsLayout>
+
+                    <!-- Plantilla de cada elemento en la lista -->
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                                Padding="20"
+                                CornerRadius="15"
+                                BackgroundColor="White"
+                                HasShadow="True"
+                                BorderColor="DarkGrey">
+                                <VerticalStackLayout Spacing="12">
+
+                                    <!-- Nombre del paciente -->
+                                    <!-- Text enlaza a la propiedad Nombre del Modelo -->
+                                    <!-- StringFormat aplica formato simple al valor enlazado -->
+                                    <Label
+                                        Text="{Binding Nombre, StringFormat='{}{0}'}"
+                                        FontSize="18"
+                                        FontAttributes="Bold"
+                                        TextColor="#2C3E50" />
+
+                                    <!-- Apellidos del paciente -->
+                                    <!-- Text enlaza a la propiedad Apellidos del Modelo -->
+                                    <Label
+                                        Text="{Binding Apellidos}"
+                                        FontSize="18"
+                                        TextColor="#2C3E50" />
+
+                                    <!-- Separador visual -->
+                                    <BoxView
+                                        HeightRequest="1"
+                                        Color="#E1E8ED"
+                                        Margin="0,5,0,5" />
+
+                                    <!-- Grupo sanguíneo -->
+                                    <!-- Text del segundo Label enlaza a GrupoSanguineo del Modelo -->
+                                    <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                                        <Label
+                                            Text="Grupo Sanguíneo:"
+                                            FontSize="14"
+                                            TextColor="#7F8C8D" />
+                                        <Label
+                                            Text="{Binding GrupoSanguineo}"
+                                            FontSize="14"
+                                            FontAttributes="Bold"
+                                            TextColor="#E74C3C" />
+                                    </HorizontalStackLayout>
+
+                                    <!-- DNI del paciente -->
+                                    <!-- Text enlazada a la propiedad Dni del Modelo -->
+                                    <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                                        <Label
+                                            Text="DNI:"
+                                            FontSize="14"
+                                            TextColor="#7F8C8D" />
+                                        <Label
+                                            Text="{Binding Dni}"
+                                            FontSize="14"
+                                            FontAttributes="Bold"
+                                            TextColor="#2C3E50" />
+                                    </HorizontalStackLayout>
+
+                                    <!-- Botones de acción -->
+                                    <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand" Margin="0,10,0,0">
+                                        <!-- Botón Acceder -->
+                                        <Button
+                                            Text="Acceder"
+                                            FontSize="14"
+                                            BackgroundColor="#2C7A7B"
+                                            TextColor="White"
+                                            CornerRadius="8"
+                                            HeightRequest="40"
+                                            HorizontalOptions="FillAndExpand"
+                                            Clicked="OnAccederPacienteClicked" />
+
+                                        <!-- Botón Eliminar -->
+                                        <Button
+                                            Text="Eliminar"
+                                            FontSize="14"
+                                            BackgroundColor="#F0F0F0"
+                                            TextColor="#E74C3C"
+                                            CornerRadius="8"
+                                            HeightRequest="40"
+                                            BorderColor="#E74C3C"
+                                            BorderWidth="1"
+                                            HorizontalOptions="FillAndExpand"
+                                            Clicked="OnEliminarPacienteClicked" />
+                                    </HorizontalStackLayout>
+
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <!-- Vista cuando la colección está vacía -->
+                    <CollectionView.EmptyView>
+                        <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="40">
+                            <Label
+                                Text="No hay pacientes registrados"
+                                FontSize="16"
+                                TextColor="#7F8C8D"
+                                HorizontalOptions="Center" />
+                        </StackLayout>
+                    </CollectionView.EmptyView>
+                    
+                </CollectionView>
+                
+            </RefreshView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Interfaces.ViewPaciente.GestionViewPaciente"
+             xmlns:local="clr-namespace:Interfaces.ViewPaciente"
+             BackgroundColor="#F5F5F5"
+             NavigationPage.HasNavigationBar="False">
+
+    <!-- Contenedor de desplazamiento para la página -->
+    <ScrollView>
+        <Grid RowSpacing="0">
+            <!-- Definición de las filas del grid -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <!-- Fila 1: Encabezado -->
+                <RowDefinition Height="Auto" />
+                <!-- Fila 2: Información adicional -->
+                <RowDefinition Height="Auto" />
+                <!-- Fila 3: Botones de acción -->
+                <RowDefinition Height="*" />
+                <!-- Fila 4: Contenido principal -->
+            </Grid.RowDefinitions>
+
+            <!-- HEADER: Área que muestra el nombre y los datos del paciente -->
+            <Frame Grid.Row="0"
+               CornerRadius="0"
+               Padding="0"
+               HasShadow="False"
+               BackgroundColor="Transparent">
+                <StackLayout Orientation="Horizontal"
+                         Padding="20,25,20,20"
+                         BackgroundColor="#2C7A7B"
+                    HorizontalOptions="FillAndExpand">
+                    <StackLayout Spacing="5"
+                             VerticalOptions="Center">
+                        <!-- Nombre del paciente -->
+                        <Label x:Name="NombrePacienteLabel"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                        <!-- Datos adicionales del paciente (como DNI, etc.) -->
+                        <Label x:Name="DatosPacienteLabel"
+                           FontSize="14"
+                           FontAttributes="None"
+                           TextColor="WhiteSmoke" />
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <!-- INFO FRAME: Contenedor para mostrar información adicional, se inyecta contenido desde el code-behind -->
+            <Frame x:Name="_infoFrame"
+               Grid.Row="1"
+               BackgroundColor="White"
+               CornerRadius="10"
+               Padding="10"
+               Margin="15,15,15,0"
+               HasShadow="True">
+                <!-- El contenido dinámico de este frame se manejará desde el código C# -->
+            </Frame>
+
+            <!-- BOTONERA: Área para los botones de acción, agregados desde el C# -->
+            <FlexLayout x:Name="BotoneraLayout"
+                    Grid.Row="2"
+                    JustifyContent="SpaceAround"
+                    Wrap="Wrap"
+                    Padding="15,20,15,10"
+                    Direction="Row"
+                    AlignItems="Center">
+                <!-- Los botones se agregan dinámicamente en el código C# -->
+            </FlexLayout>
+
+            <!-- CONTENEDOR DE VISTA: Área donde se inyecta el contenido dinámico o las vistas en función de la acción del usuario -->
+            <ContentView x:Name="_contentContainer"
+                     Grid.Row="3"
+                     Padding="15,5"
+                     VerticalOptions="FillAndExpand">
+                <!-- Se inyecta la vista dinámica dependiendo del contexto -->
+            </ContentView>
+        </Grid>
+    </ScrollView>
+</ContentPage>

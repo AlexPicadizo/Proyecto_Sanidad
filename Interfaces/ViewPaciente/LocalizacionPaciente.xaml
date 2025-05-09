@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Interfaces.ViewPaciente.LocalizacionPaciente">
+
+    <!-- RECURSOS DE COLORES Y ESTILOS -->
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <!-- Colores utilizados en la UI -->
+            <Color x:Key="PrimaryColor">#2C7A7B</Color>
+            <Color x:Key="SecondaryColor">#4299E1</Color>
+            <Color x:Key="BackgroundLight">#F7FAFC</Color>
+            <Color x:Key="TextDark">#2D3748</Color>
+            <Color x:Key="TextSecondary">#718096</Color>
+            <Color x:Key="DisabledBackground">#E9E9E9</Color>
+            <Color x:Key="DisabledText">#9E9E9E</Color>
+
+            <!-- Estilos básicos de la interfaz -->
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextDark}"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Margin" Value="0,0,0,5"/>
+            </Style>
+
+            <!-- Estilo base para los campos de entrada (Entry) -->
+            <Style TargetType="Entry" x:Key="BaseEntry">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundLight}"/>
+                <Setter Property="TextColor" Value="{StaticResource TextDark}"/>
+                <Setter Property="PlaceholderColor" Value="{StaticResource TextSecondary}"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Margin" Value="0,0,0,15"/>
+                <Setter Property="Keyboard" Value="Numeric"/>
+            </Style>
+
+            <!-- Estilo para entradas deshabilitadas -->
+            <Style TargetType="Entry" x:Key="DisabledEntry" BasedOn="{StaticResource BaseEntry}">
+                <Setter Property="BackgroundColor" Value="{StaticResource DisabledBackground}"/>
+                <Setter Property="TextColor" Value="{StaticResource DisabledText}"/>
+            </Style>
+
+            <!-- Estilo base para los botones -->
+            <Style TargetType="Button" x:Key="BaseButton">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+
+            <!-- Estilo para el botón principal -->
+            <Style TargetType="Button" x:Key="PrimaryButton" BasedOn="{StaticResource BaseButton}">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+            </Style>
+
+            <!-- Estilo para el botón secundario -->
+            <Style TargetType="Button" x:Key="SecondaryButton" BasedOn="{StaticResource BaseButton}">
+                <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}"/>
+            </Style>
+
+            <!-- Estilo para botones deshabilitados -->
+            <Style TargetType="Button" x:Key="DisabledButton" BasedOn="{StaticResource BaseButton}">
+                <Setter Property="BackgroundColor" Value="{StaticResource DisabledBackground}"/>
+                <Setter Property="TextColor" Value="{StaticResource DisabledText}"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <!-- INTERFAZ DE USUARIO -->
+    <Grid VerticalOptions="FillAndExpand">
+        <ScrollView>
+            <Frame CornerRadius="15" Padding="25" Margin="20"
+               BackgroundColor="White" BorderColor="{StaticResource SecondaryColor}"
+               HasShadow="True">
+
+                <VerticalStackLayout Spacing="10">
+
+                    <!-- TÍTULO DE LA PANTALLA -->
+                    <Label Text="Ubicación del Paciente" 
+                       FontSize="24" FontAttributes="Bold" 
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource PrimaryColor}"
+                       Margin="0,0,0,20"/>
+
+                    <!-- ICONO REPRESENTATIVO DE LA UBICACIÓN -->
+                    <Image Source="ubicacionpacienteicono.png" 
+                       Aspect="AspectFit" HeightRequest="120"
+                       HorizontalOptions="Center" Margin="0,0,0,20"/>
+
+                    <!-- CAMPOS DE UBICACIÓN -->
+                    <Label Text="Planta:" FontAttributes="Bold"/>
+                    <!-- Binding bidireccional a la propiedad Ubicacion.Planta -->
+                    <!-- El 'Mode=TwoWay' permite que los cambios en la UI actualicen la propiedad en el modelo -->
+                    <Entry x:Name="PlantaEntry"
+                           Text="{Binding Ubicacion.Planta, Mode=TwoWay}" 
+                        Style="{StaticResource BaseEntry}"
+                           Placeholder="Ej: 3"/>
+
+                    <Label Text="Habitación:" FontAttributes="Bold"/>
+                    <!-- Binding bidireccional a la propiedad Ubicacion.Habitacion -->
+                    <Entry x:Name="HabitacionEntry"
+                           Text="{Binding Ubicacion.Habitacion, Mode=TwoWay}"
+                           Style="{StaticResource BaseEntry}"
+                           Placeholder="Ej: 215"/>
+
+                    <Label Text="Cama:" FontAttributes="Bold"/>
+                    <!-- Binding bidireccional a la propiedad Ubicacion.Cama -->
+                    <Entry x:Name="CamaEntry"
+                           Text="{Binding Ubicacion.Cama, Mode=TwoWay}"
+                           Style="{StaticResource BaseEntry}"
+                           Placeholder="Ej: 2"/>
+
+                    <!-- BOTONES DE ACCIÓN -->
+                    <Grid ColumnDefinitions="*,*" Margin="0,20">
+                        <!-- Botón para guardar la ubicación -->
+                        <Button x:Name="EstablecerButton"
+                            Style="{StaticResource PrimaryButton}"
+                            Text="Establecer"
+                            Grid.Column="0"
+                            Clicked="OnEstablecerClicked"/>
+
+                        <!-- Botón para activar la edición de los campos -->
+                        <Button x:Name="ModificarButton"
+                            Style="{StaticResource SecondaryButton}"
+                            Text="Modificar"
+                            Grid.Column="1"
+                            Clicked="OnModificarClicked"/>
+                    </Grid>
+
+                    <!-- MENSAJE INFORMATIVO -->
+                    <Frame BackgroundColor="#FFF6F6" 
+                       CornerRadius="10" 
+                       Padding="15"
+                       BorderColor="#FFEBEE">
+                        <Label Text="Verifique cuidadosamente la ubicación antes de guardar. Los cambios afectarán al seguimiento del paciente."
+                           FontSize="14"
+                           TextColor="#D32F2F"
+                           HorizontalTextAlignment="Center"/>
+                    </Frame>
+
+                </VerticalStackLayout>
+            </Frame>
+        </ScrollView>
+    </Grid>
+</ContentView>

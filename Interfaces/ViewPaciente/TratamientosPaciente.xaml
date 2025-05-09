@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Contenedor principal de la vista -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Interfaces.ViewPaciente.TratamientosPaciente"
+             BackgroundColor="#F7FAFC">
+
+    <!-- Scroll para desplazar el contenido -->
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Título de la sección -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                <Image Source="iconotratamiento.png" HeightRequest="24" WidthRequest="24"/>
+                <Label Text="Nuevo Tratamiento" FontAttributes="Bold" FontSize="24" TextColor="#2B6CB0"/>
+            </HorizontalStackLayout>
+
+            <!-- Diagnóstico actual mostrado en un marco azul claro -->
+            <Frame BackgroundColor="#EBF8FF" CornerRadius="10" Padding="15" BorderColor="#BEE3F8">
+                <Label x:Name="lNombreDiagnostico" FontSize="16" FontAttributes="Bold" TextColor="#2C5282"/>
+            </Frame>
+
+            <!-- Sección de medicamentos asociados -->
+            <Frame BackgroundColor="White" CornerRadius="10" Padding="15" BorderColor="#E2E8F0" HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+
+                    <!-- Título de la sección -->
+                    <Label Text="Medicamentos Asociados" FontSize="18" FontAttributes="Bold" TextColor="#2B6CB0"/>
+
+                    <!-- Barra de búsqueda para filtrar medicamentos -->
+                    <SearchBar x:Name="buscadorMedicamentos"
+                               Placeholder="Buscar medicamento..."
+                               TextChanged="OnBuscarMedicamento"
+                               CancelButtonColor="#4A5568"
+                               TextColor="#2D3748"
+                               PlaceholderColor="#A0AEC0" />
+
+                    <!-- Lista de medicamentos disponibles -->
+                    <CollectionView x:Name="listaMedicamentosDisponibles"
+                                    HeightRequest="150"
+                                    SelectionMode="Single"
+                                    SelectionChanged="OnSeleccionarMedicamento">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <!-- Cada medicamento mostrado como una tarjeta -->
+                                <Frame Padding="8" Margin="4"
+                                       BackgroundColor="#EDF2F7"
+                                       BorderColor="#CBD5E0"
+                                       CornerRadius="6">
+                                    <Label Text="{Binding Nombre}" TextColor="#2D3748" />
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Editor para instrucciones de uso del medicamento seleccionado -->
+                    <Editor x:Name="entryInstruccionesMedicamento"
+                            Placeholder="Instrucciones de uso"
+                            AutoSize="TextChanges"
+                            TextColor="#2D3748"
+                            PlaceholderColor="#A0AEC0"
+                            HeightRequest="80"/>
+
+                    <!-- Botón para añadir el medicamento con instrucciones -->
+                    <Button Text="Añadir Medicamento"
+                            Clicked="OnAgregarMedicamento"
+                            BackgroundColor="#38A169"
+                            TextColor="White"
+                            CornerRadius="10"
+                            FontAttributes="Bold"/>
+
+                    <!-- Lista de medicamentos ya añadidos -->
+                    <CollectionView x:Name="listaMedicamentos"
+                                    HeightRequest="200"
+                                    ItemsSource="{Binding Medicamentos}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame CornerRadius="8" Padding="10" Margin="5"
+                                       BorderColor="#CBD5E0" BackgroundColor="#F7FAFC">
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                                        <!-- Nombre del medicamento -->
+                                        <Label Text="{Binding Medicamento.Nombre}" FontAttributes="Bold" Grid.Column="0" Grid.Row="0" TextColor="Black"/>
+
+                                        <!-- Instrucciones asociadas -->
+                                        <Label Text="{Binding Instrucciones}" FontSize="12" TextColor="#4A5568" Grid.Column="0" Grid.Row="1"/>
+
+                                        <!-- Botón para eliminar el medicamento -->
+                                        <Button Text="✕"
+                                                BackgroundColor="#E53E3E"
+                                                TextColor="White"
+                                                WidthRequest="30"
+                                                HeightRequest="30"
+                                                CornerRadius="15"
+                                                Clicked="OnEliminarMedicamento"
+                                                CommandParameter="{Binding .}"
+                                                Grid.RowSpan="2"
+                                                Grid.Column="1"
+                                                VerticalOptions="Center"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Campo para el nombre del tratamiento -->
+            <Frame BackgroundColor="White" CornerRadius="10" Padding="0" BorderColor="#E2E8F0" HasShadow="True">
+                <VerticalStackLayout Spacing="8" Padding="15">
+                    <Label Text="Introduce el tratamiento:*" FontAttributes="Bold" TextColor="#4A5568"/>
+                    <Entry x:Name="entryNombre" Placeholder="Ej: Calmantes, Vitamina C"
+                           TextColor="#2D3748" PlaceholderColor="#A0AEC0"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Campo para la dosis diaria -->
+            <Frame BackgroundColor="White" CornerRadius="10" Padding="0" BorderColor="#E2E8F0" HasShadow="True">
+                <VerticalStackLayout Spacing="8" Padding="15">
+                    <Label Text="Dosis Diaria:*" FontAttributes="Bold" TextColor="#4A5568"/>
+                    <Entry x:Name="entryDosis" Placeholder="Ej: 500mg cada 8 horas"
+                           TextColor="#2D3748" PlaceholderColor="#A0AEC0"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Fecha de inicio del tratamiento -->
+            <Frame BackgroundColor="White" CornerRadius="10" Padding="0" BorderColor="#E2E8F0" HasShadow="True">
+                <VerticalStackLayout Spacing="8" Padding="15">
+                    <Label Text="Fecha de Inicio:*" FontAttributes="Bold" TextColor="#4A5568"/>
+                    <DatePicker x:Name="datePickerInicio" Format="dd/MM/yyyy"
+                                TextColor="#2D3748" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Fecha de fin del tratamiento -->
+            <Frame BackgroundColor="White" CornerRadius="10" Padding="0" BorderColor="#E2E8F0" HasShadow="True">
+                <VerticalStackLayout Spacing="8" Padding="15">
+                    <Label Text="Fecha de Fin:" FontAttributes="Bold" TextColor="#4A5568"/>
+                    <DatePicker x:Name="datePickerFin" Format="dd/MM/yyyy"
+                                TextColor="#2D3748" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botón para guardar todo el tratamiento -->
+            <Button Text="Guardar Tratamiento"
+                    Clicked="OnGuardarTratamiento"
+                    BackgroundColor="#3182CE"
+                    TextColor="White"
+                    CornerRadius="10"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="50"
+                    Margin="0,20,0,0"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

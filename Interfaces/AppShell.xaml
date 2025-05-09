@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Configuración de Shell para la app MAUI.
+  Shell define la estructura de navegación mediante ShellContent y FlyoutItem.
+  FlyoutBehavior está en Disabled para ocultar el menú en la pantalla de inicio de sesión.
+-->
+<Shell
+    x:Class="Interfaces.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:login="clr-namespace:Interfaces.ViewLogin"
+    xmlns:Usuario="clr-namespace:Interfaces.ViewUsuario"
+    xmlns:Admin="clr-namespace:Interfaces.ViewAdministrador"
+    xmlns:Paciente="clr-namespace:Interfaces.ViewPaciente"
+    xmlns:Registro="clr-namespace:Interfaces.ViewRegistro"
+    Shell.FlyoutBehavior="Disabled">
+
+    <!--
+      Este ShellContent actúa como la página principal al arrancar la app.
+      DataTemplate permite instanciar la vista de forma diferida.
+    -->
+    <ShellContent
+        Shell.NavBarIsVisible="False"
+        Title="Login"
+        ContentTemplate="{DataTemplate login:Login}"
+        Route="Login"/>
+
+    <!--
+      Página independiente (fuera del FlyoutItem) para navegar programáticamente
+      tras un login de administrador. La ruta es clave para GoToAsync.
+    -->
+    <ShellContent
+        Shell.NavBarIsVisible="False"
+        Title="ADMIN"
+        ContentTemplate="{DataTemplate Admin:ViewPrincipalAdmin}"
+        Route="ViewPrincipalAdmin"/>
+
+    <ShellContent
+        Shell.NavBarIsVisible="False"
+        Title="REGISTRO"
+        ContentTemplate="{DataTemplate Registro:RegistroUsuario}"
+        Route="RegistroUsuario"/>
+
+
+    <!--
+      FlyoutItem agrupa páginas relacionadas para el rol de usuario estándar.
+      AsMultipleItems muestra cada ShellContent como elemento individual en el menú.
+    -->
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <!-- Página para agregar pacientes -->
+        <ShellContent 
+            Shell.NavBarIsVisible="False"
+            Title="Agregar Pacientes"
+            ContentTemplate="{DataTemplate Usuario:AgregarPacientes}"
+            Route="AgregarPacientes" />
+
+        <!-- Página para listar / gestionar pacientes -->
+        <ShellContent 
+            Shell.NavBarIsVisible="False"
+            Title="Mis Pacientes"
+            ContentTemplate="{DataTemplate Usuario:ConsultarPacientes}"
+            Route="ConsultarPacientes" />
+    </FlyoutItem>
+
+</Shell>

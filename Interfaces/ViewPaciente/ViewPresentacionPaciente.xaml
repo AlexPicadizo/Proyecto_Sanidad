@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vista principal de la sección Paciente -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Interfaces.ViewPaciente.ViewPresentacionPaciente">
+
+    <!-- Contenedor principal -->
+    <VerticalStackLayout Spacing="0" Padding="0">
+
+        <!-- Área con todo el contenido scrollable -->
+        <ScrollView>
+            <VerticalStackLayout Spacing="30" Padding="25,25,25,10">
+
+                <!-- Cabecera con icono y texto de bienvenida -->
+                <HorizontalStackLayout Spacing="20" VerticalOptions="Center">
+                    <Image Source="iconopaciente.png" WidthRequest="80" HeightRequest="80"/>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="BIENVENIDO" FontSize="28" TextColor="#2B5876" FontAttributes="Bold"/>
+                        <Label Text="a la gestión de tu paciente" FontSize="18" TextColor="#4E4376"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <!-- Tarjeta con mensaje motivador -->
+                <Frame CornerRadius="15" BackgroundColor="#F8F9FA" BorderColor="#E9ECEF" Padding="20" HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="💙 Cuidado Excepcional" FontSize="18" TextColor="#2B5876" FontAttributes="Bold"/>
+                        <Label Text="Aquí encontrarás toda la información necesaria..." FontSize="14" TextColor="#495057"/>
+                        <Label Text="¡Sigue cuidándolo siempre!" FontSize="16" TextColor="#4E4376" FontAttributes="Bold" Margin="0,10,0,0"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Indicaciones de lo que puede hacer el usuario -->
+                <Frame CornerRadius="15" BackgroundColor="#E3F2FD" BorderColor="#BBDEFB" Padding="20">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="¿QUÉ PUEDES HACER AQUÍ?" FontSize="16" TextColor="#0D47A1" FontAttributes="Bold"/>
+
+                        <!-- Opción: ver historial -->
+                        <HorizontalStackLayout Spacing="15">
+                            <Image Source="historialpaciente.png" WidthRequest="40" HeightRequest="40"/>
+                            <Label Text="Consultar el historial médico completo" FontSize="14" TextColor="#1565C0" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Opción: diagnósticos -->
+                        <HorizontalStackLayout Spacing="15">
+                            <Image Source="diagnosticopaciente.png" WidthRequest="40" HeightRequest="40"/>
+                            <Label Text="Consultar y agregar los diagnósticos" FontSize="14" TextColor="#1565C0" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Opción: seguimientos -->
+                        <HorizontalStackLayout Spacing="15">
+                            <Image Source="seguimientopaciente.png" WidthRequest="40" HeightRequest="40"/>
+                            <Label Text="Agregar un seguimiento detallado" FontSize="14" TextColor="#1565C0" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Opción: alergias -->
+                        <HorizontalStackLayout Spacing="15">
+                            <Image Source="alergiapaciente.png" WidthRequest="40" HeightRequest="40"/>
+                            <Label Text="Ver y gestionar alergias" FontSize="14" TextColor="#1565C0" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Opción: ubicación -->
+                        <HorizontalStackLayout Spacing="15">
+                            <Image Source="localizacionpaciente.png" WidthRequest="40" HeightRequest="40"/>
+                            <Label Text="Conocer la ubicación actual del paciente" FontSize="14" TextColor="#1565C0" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Pie de página -->
+        <Label Text="Sistema de Gestión Sanitaria v1.0" FontSize="14" TextColor="Grey" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,10"/>
+    </VerticalStackLayout>
+</ContentView>
