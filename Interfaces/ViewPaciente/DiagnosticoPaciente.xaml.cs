@@ -448,14 +448,6 @@ public partial class DiagnosticoPaciente : ContentView
                     TextColor = Colors.DarkSlateBlue
                 },
             
-                // 2. Dosis diaria
-                new Label
-                {
-                    Text = tratamiento.DosisDiaria,
-                    FontSize = 14,
-                    TextColor = Colors.DarkSlateGray
-                },
-            
                 // 3. Fecha de inicio (formateada)
                 new Label
                 {

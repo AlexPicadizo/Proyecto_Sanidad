@@ -73,22 +73,20 @@ public partial class TratamientosPaciente : ContentView
     private async void OnGuardarTratamiento(object sender, EventArgs e)
     {
         // Validación de campos requeridos
-        if (string.IsNullOrWhiteSpace(entryDosis.Text) || string.IsNullOrWhiteSpace(entryNombre.Text))
+        if (string.IsNullOrWhiteSpace(entryNombre.Text))
         {
-            await Application.Current.MainPage.DisplayAlert("Error", "Debe especificar la dosis diaria y el nombre del tratamiento", "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", "Debe especificar el nombre del tratamiento", "OK");
             return;
         }
 
         // Captura de datos de entrada del tratamiento
         var nombre = entryNombre.Text;
-        var dosisDiaria = entryDosis.Text;
         var fechaInicio = datePickerInicio.Date;
         var fechaFin = datePickerFin.Date;
 
         try
         {
-            // Crear objeto tratamiento (validará la dosis automáticamente)
-            tratamiento = new Tratamiento(nombre, dosisDiaria, fechaInicio, fechaFin);
+            tratamiento = new Tratamiento(nombre, fechaInicio, fechaFin);
 
             // Validar las fechas del tratamiento
             tratamiento.ValidarFechas();
@@ -217,19 +215,9 @@ public partial class TratamientosPaciente : ContentView
     {
         var texto = e.NewTextValue ?? "";
 
-        // Normalizar el texto para la búsqueda (mayúscula inicial o total si es solo 1 carácter)
-        if (!string.IsNullOrEmpty(texto) && texto.Length > 1)
-        {
-            texto = char.ToUpper(texto[0]) + texto.Substring(1);
-        }
-        else
-        {
-            texto = texto.ToUpper();
-        }
-
-        // Filtrar medicamentos por el inicio del nombre
+        // Filtrar medicamentos sin importar mayúsculas/minúsculas
         var filtrados = medicamentosDisponibles
-            .Where(m => m.Nombre.StartsWith(texto))
+            .Where(m => m.Nombre.StartsWith(texto, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
         listaMedicamentosDisponibles.ItemsSource = filtrados;

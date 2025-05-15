@@ -822,14 +822,13 @@ namespace ModeloBdClases.BaseDatos
             {
                 connection.Open();
 
-                string query = "INSERT INTO tratamientos (nombre, dosis_diaria, fecha_inicio, fecha_fin, diagnostico_id) " +
-                               "VALUES (@nombre, @dosis, @inicio, @fin, @diagId); SELECT LAST_INSERT_ID();";
+                string query = "INSERT INTO tratamientos (nombre, fecha_inicio, fecha_fin, diagnostico_id) " +
+                               "VALUES (@nombre, @inicio, @fin, @diagId); SELECT LAST_INSERT_ID();";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
                     // Se agregan los parámetros a la consulta
                     command.Parameters.AddWithValue("@nombre", tratamiento.Nombre);
-                    command.Parameters.AddWithValue("@dosis", tratamiento.DosisDiaria);
                     command.Parameters.AddWithValue("@inicio", tratamiento.FechaInicio);
                     command.Parameters.AddWithValue("@fin", tratamiento.FechaFin);
                     command.Parameters.AddWithValue("@diagId", diagnosticoId);
@@ -861,7 +860,7 @@ namespace ModeloBdClases.BaseDatos
             {
                 connection.Open();
 
-                string query = "SELECT id, nombre, dosis_diaria, fecha_inicio, fecha_fin FROM tratamientos WHERE diagnostico_id = @idDiagnostico";
+                string query = "SELECT id, nombre, fecha_inicio, fecha_fin FROM tratamientos WHERE diagnostico_id = @idDiagnostico";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
@@ -873,14 +872,13 @@ namespace ModeloBdClases.BaseDatos
                         {
                             int idTratamiento = reader.GetInt32("id");
                             string nombre = reader.GetString("nombre");
-                            string dosisDiaria = reader.GetString("dosis_diaria");
                             DateTime fechaInicio = reader.GetDateTime("fecha_inicio");
                             DateTime? fechaFin = reader.IsDBNull(reader.GetOrdinal("fecha_fin"))
                                 ? (DateTime?)null
                                 : reader.GetDateTime("fecha_fin");
 
                             // Se crea un nuevo objeto Tratamiento y se añade a la lista
-                            tratamientos.Add(new Tratamiento(idTratamiento, nombre, dosisDiaria, fechaInicio, fechaFin));
+                            tratamientos.Add(new Tratamiento(idTratamiento, nombre, fechaInicio, fechaFin));
                         }
                     }
                 }
@@ -1011,33 +1009,28 @@ namespace ModeloBdClases.BaseDatos
         /// <param name="id">ID del paciente</param>
         /// <param name="nota">Objeto NotaEvolucion con fecha y contenido</param>
         /// <returns>True si se guardó correctamente, false si no</returns>
-        public async Task<bool> GuardarNotaEvolucionPorId(int id, NotaEvolucion nota)
+        public async Task<int> GuardarNotaEvolucionPorId(int id, NotaEvolucion nota)
         {
-            // Si el ID del paciente no es válido (menor o igual a 0), retornamos false
-            if (id <= 0) return false;
+            if (id <= 0) return 0;
 
-            // Establecemos la conexión con la base de datos usando el método 'BdApi.ConexionBd()'
             using (MySqlConnection conexion = BdApi.ConexionBd())
             {
-                // Abrimos la conexión de manera asíncrona
                 await conexion.OpenAsync();
 
-                // Definimos la consulta SQL para insertar la nueva nota de evolución
                 var query = "INSERT INTO Notas_Evolucion (paciente_id, fecha, contenido) VALUES (@pacienteId, @fecha, @contenido)";
-
-                // Creamos el comando SQL con la consulta y la conexión
                 using (var cmd = new MySqlCommand(query, conexion))
                 {
-                    // Agregamos los parámetros necesarios para la consulta SQL (ID del paciente, fecha y contenido de la nota)
                     cmd.Parameters.AddWithValue("@pacienteId", id);
                     cmd.Parameters.AddWithValue("@fecha", nota.Fecha);
                     cmd.Parameters.AddWithValue("@contenido", nota.Contenido);
 
-                    // Ejecutamos la consulta de inserción y obtenemos el número de filas afectadas
                     int filasAfectadas = await cmd.ExecuteNonQueryAsync();
 
-                    // Si se insertaron filas correctamente (filasAfectadas > 0), retornamos true, caso contrario, false
-                    return filasAfectadas > 0;
+                    if (filasAfectadas > 0)
+                    {
+                        return (int)cmd.LastInsertedId; // <<<<< devuelve el ID generado
+                    }
+                    return 0;
                 }
             }
         }

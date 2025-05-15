@@ -88,6 +88,7 @@
                             <DatePicker x:Name="fechaPicker" 
                                Date="{Binding FechaSeleccionada, Source={x:Static sys:DateTime.Today}}"
                                TextColor="{StaticResource TextDark}"
+                               Format="dd/MM/yyyy"
                                FontSize="16"
                                HorizontalOptions="Start"
                                BackgroundColor="Transparent"

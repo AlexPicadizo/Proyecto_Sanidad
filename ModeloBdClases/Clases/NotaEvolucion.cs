@@ -61,6 +61,7 @@ namespace ModeloBdClases.Clases
         {
             if (fecha > DateTime.Now)
                 throw new Exception("La fecha de la nota no puede ser futura.");
+            if(fecha.Equals(null)) throw new Exception("La fecha de la nota no puede estar vacía.");
             return fecha;
         }
         #endregion

@@ -68,12 +68,14 @@ public partial class EvolucionPaciente : ContentView
     }
 
     /// <summary>
-    /// Método asíncrono que crea la tarjeta de evolución visualmente (con fecha, contenido y botón para eliminar)
+    /// Crea una tarjeta visual para mostrar una nota de evolución
     /// </summary>
-    /// <param name="nota"></param>
-    /// <returns></returns>
+    /// <param name="nota">Nota de evolución a mostrar</param>
+    /// <returns>Una vista (Frame) que contiene la tarjeta</returns>
     private async Task<View> CrearTarjetaEvolucionAsync(NotaEvolucion nota)
     {
+        Frame tarjeta = null;  // Referencia para poder eliminar el frame más adelante
+
         // Crear el botón para eliminar la nota
         var botonEliminar = new Button
         {
@@ -88,16 +90,39 @@ public partial class EvolucionPaciente : ContentView
         };
 
         // Asociar el evento de clic para eliminar la nota
-        botonEliminar.Clicked += async (s, e) => await EliminarNotaClicked(nota);
+        botonEliminar.Clicked += async (s, e) =>
+        {
+            bool confirmacion = await Application.Current.MainPage.DisplayAlert(
+                "Eliminar nota", "¿Estás seguro de que deseas eliminar esta nota de evolución?", "Sí", "Cancelar");
+
+            if (!confirmacion) return;
+
+            bool exito = await metodosBd.EliminarNotaEvolucion(nota.Id);
+
+            if (exito)
+            {
+                _notasEvolucion.Remove(nota);
+
+                // Eliminar visualmente el frame si existe
+                if (tarjeta != null && layoutEvoluciones.Children.Contains(tarjeta))
+                    layoutEvoluciones.Children.Remove(tarjeta);
+
+                await Application.Current.MainPage.DisplayAlert("Eliminada", "Nota eliminada correctamente.", "OK");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "No se pudo eliminar la nota.", "OK");
+            }
+        };
 
         // Crear un grid para organizar la fecha y el botón de eliminar
         var grid = new Grid
         {
             ColumnDefinitions =
-            {
-                new ColumnDefinition { Width = GridLength.Star },  // Columna para la fecha
-                new ColumnDefinition { Width = GridLength.Auto }  // Columna para el botón eliminar
-            }
+        {
+            new ColumnDefinition { Width = GridLength.Star },  // Columna para la fecha
+            new ColumnDefinition { Width = GridLength.Auto }   // Columna para el botón eliminar
+        }
         };
 
         // Crear el label para mostrar la fecha de la nota
@@ -110,16 +135,16 @@ public partial class EvolucionPaciente : ContentView
             VerticalOptions = LayoutOptions.Center
         };
 
-        // Colocar el botón en la segunda columna del grid (índice 1)
+        // Posicionar el botón de eliminar en la segunda columna
         Grid.SetColumn(botonEliminar, 1);
         Grid.SetRow(botonEliminar, 0);
 
-        // Añadir los controles al grid
+        // Añadir controles al grid
         grid.Children.Add(labelFecha);
         grid.Children.Add(botonEliminar);
 
-        // Crear un Frame que contendrá el grid, el contenido de la evolución y el diseño general
-        return new Frame
+        // Crear el Frame (guardado en la variable tarjeta)
+        tarjeta = new Frame
         {
             BorderColor = Color.FromArgb("#E5E7EB"),  // Color de borde gris
             CornerRadius = 12,
@@ -131,30 +156,32 @@ public partial class EvolucionPaciente : ContentView
             {
                 Spacing = 8,
                 Children =
+            {
+                grid,
+                new BoxView
                 {
-                    grid,
-                    new BoxView
-                    {
-                        HeightRequest = 1,  // Línea divisoria entre la fecha y el contenido
-                        Color = Color.FromArgb("#E5E7EB"),
-                        Margin = new Thickness(0, 5)
-                    },
-                    new Label
-                    {
-                        Text = "📝 Contenido evolución:",
-                        FontAttributes = FontAttributes.Bold,
-                        FontSize = 14,
-                        TextColor = Color.FromArgb("#4B5563")
-                    },
-                    new Label
-                    {
-                        Text = nota.Contenido,  // Mostrar el contenido de la evolución
-                        FontSize = 14,
-                        TextColor = Color.FromArgb("#374151")
-                    }
+                    HeightRequest = 1,  // Línea divisoria entre la fecha y el contenido
+                    Color = Color.FromArgb("#E5E7EB"),
+                    Margin = new Thickness(0, 5)
+                },
+                new Label
+                {
+                    Text = "📝 Contenido evolución:",
+                    FontAttributes = FontAttributes.Bold,
+                    FontSize = 14,
+                    TextColor = Color.FromArgb("#4B5563")
+                },
+                new Label
+                {
+                    Text = nota.Contenido,  // Mostrar el contenido de la evolución
+                    FontSize = 14,
+                    TextColor = Color.FromArgb("#374151")
                 }
             }
+            }
         };
+
+        return tarjeta;
     }
 
     #endregion
@@ -211,22 +238,23 @@ public partial class EvolucionPaciente : ContentView
             int pacienteId = metodosBd.ObtenerIdPaciente(_paciente.Dni);
 
             // Intentar guardar la nota en la base de datos
-            bool exito = await metodosBd.GuardarNotaEvolucionPorId(pacienteId, nuevaNota);
-
-            // Si la nota se guarda correctamente, actualizar la interfaz
-            if (exito)
+            int nuevoId = await metodosBd.GuardarNotaEvolucionPorId(pacienteId, nuevaNota);
+            if (nuevoId > 0)
             {
-                _notasEvolucion.Insert(0, nuevaNota);  // Insertar la nueva nota al principio de la colección
-                layoutEvoluciones.Children.Insert(0, await CrearTarjetaEvolucionAsync(nuevaNota));  // Insertar la tarjeta de la nueva nota
-                await Application.Current.MainPage.DisplayAlert("Éxito", "Evolución guardada correctamente.", "OK");
-                notaEditor.Text = string.Empty;  // Limpiar el editor de texto
+                nuevaNota.Id = nuevoId;
+                _notasEvolucion.Add(nuevaNota);
+                var nuevaTarjeta = await CrearTarjetaEvolucionAsync(nuevaNota);
+                layoutEvoluciones.Children.Insert(0, nuevaTarjeta);
+
+                await Application.Current.MainPage.DisplayAlert("Guardada", "Evolución guardada correctamente.", "OK");
+
+                // Limpiar el contenido del editor
+                notaEditor.Text = string.Empty;
             }
             else
             {
-                // Mostrar mensaje de error si no se puede guardar la evolución
                 await Application.Current.MainPage.DisplayAlert("Error", "No se pudo guardar la evolución.", "OK");
             }
-
 
         }
         catch (Exception error)

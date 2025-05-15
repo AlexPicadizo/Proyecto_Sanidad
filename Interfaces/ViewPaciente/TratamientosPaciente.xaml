@@ -113,15 +113,6 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Campo para la dosis diaria -->
-            <Frame BackgroundColor="White" CornerRadius="10" Padding="0" BorderColor="#E2E8F0" HasShadow="True">
-                <VerticalStackLayout Spacing="8" Padding="15">
-                    <Label Text="Dosis Diaria:*" FontAttributes="Bold" TextColor="#4A5568"/>
-                    <Entry x:Name="entryDosis" Placeholder="Ej: 500mg cada 8 horas"
-                           TextColor="#2D3748" PlaceholderColor="#A0AEC0"/>
-                </VerticalStackLayout>
-            </Frame>
-
             <!-- Fecha de inicio del tratamiento -->
             <Frame BackgroundColor="White" CornerRadius="10" Padding="0" BorderColor="#E2E8F0" HasShadow="True">
                 <VerticalStackLayout Spacing="8" Padding="15">

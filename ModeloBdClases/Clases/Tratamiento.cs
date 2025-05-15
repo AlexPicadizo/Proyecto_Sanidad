@@ -9,7 +9,6 @@ namespace ModeloBdClases.Clases
     public class Tratamiento
     {
         // Atributos privados
-        private string dosisDiaria;
         private DateTime? fechaInicio, fechaFin;
 
         #region RELACIONES
@@ -30,13 +29,11 @@ namespace ModeloBdClases.Clases
         /// Constructor para crear un tratamiento sin especificar ID, por ejemplo, antes de guardarlo en base de datos.
         /// </summary>
         /// <param name="nombre">Nombre del tratamiento.</param>
-        /// <param name="dosisDiaria">Dosis diaria recomendada.</param>
         /// <param name="fechaInicio">Fecha en la que inicia el tratamiento.</param>
         /// <param name="fechaFin">Fecha en la que finaliza el tratamiento.</param>
-        public Tratamiento(string nombre, string dosisDiaria, DateTime? fechaInicio, DateTime? fechaFin)
+        public Tratamiento(string nombre, DateTime? fechaInicio, DateTime? fechaFin)
         {
             Nombre = nombre;
-            DosisDiaria = dosisDiaria;
             FechaInicio = fechaInicio;
             FechaFin = fechaFin;
         }
@@ -46,14 +43,12 @@ namespace ModeloBdClases.Clases
         /// </summary>
         /// <param name="id">Identificador único del tratamiento.</param>
         /// <param name="nombre">Nombre del tratamiento.</param>
-        /// <param name="dosisDiaria">Dosis diaria recomendada.</param>
         /// <param name="fechaInicio">Fecha de inicio del tratamiento.</param>
         /// <param name="fechaFin">Fecha de finalización del tratamiento.</param>
-        public Tratamiento(int id, string nombre, string dosisDiaria, DateTime? fechaInicio, DateTime? fechaFin)
+        public Tratamiento(int id, string nombre, DateTime? fechaInicio, DateTime? fechaFin)
         {
             Id = id;
             Nombre = nombre;
-            DosisDiaria = dosisDiaria;
             FechaInicio = fechaInicio;
             FechaFin = fechaFin;
         }
@@ -64,15 +59,6 @@ namespace ModeloBdClases.Clases
         /// Nombre del tratamiento.
         /// </summary>
         public string Nombre { get; set; }
-
-        /// <summary>
-        /// Dosis diaria que debe seguir el paciente.
-        /// </summary>
-        public string DosisDiaria
-        {
-            get => dosisDiaria;
-            set => dosisDiaria = ComprobarDosis(value); // Validación aplicada
-        }
 
         /// <summary>
         /// Fecha en la que el tratamiento comienza.
@@ -99,17 +85,6 @@ namespace ModeloBdClases.Clases
         #endregion
 
         #region VALIDACIONES
-        /// <summary>
-        /// Comprueba que la dosis diaria no esté vacía.
-        /// </summary>
-        /// <param name="dosis">Dosis diaria como string.</param>
-        /// <returns>Dosis diaria si es válida.</returns>
-        /// <exception cref="Exception">Se lanza si la dosis está vacía.</exception>
-        private string ComprobarDosis(string dosis)
-        {
-            if (string.IsNullOrEmpty(dosis)) throw new Exception("La dosis diaria no puede estar vacía.");
-            return dosis;
-        }
 
         /// <summary>
         /// Valida que la fecha de inicio no sea posterior a la fecha de fin.
