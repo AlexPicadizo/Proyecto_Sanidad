@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModeloBdClases.Validaciones;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,7 +51,7 @@ namespace ModeloBdClases.Clases
         public string Nombre
         {
             get => nombre;
-            set => nombre = ComprobarNombre(value); // Validación al asignar
+            set => nombre = ValidadorDatos.ComprobarNombreMedicamento(value); // Validación al asignar
         }
 
         /// <summary>
@@ -60,34 +61,10 @@ namespace ModeloBdClases.Clases
         public string Descripcion
         {
             get => descripcion;
-            set => descripcion = ComprobarDescripcion(value); // Validación al asignar
+            set => descripcion = ValidadorDatos.ComprobarDescripcionMedicamento(value); // Validación al asignar
         }
         #endregion
 
-        #region VALIDACIONES
-        /// <summary>
-        /// Valida que el nombre del medicamento no sea vacío ni nulo.
-        /// </summary>
-        /// <param name="nombre">Nombre a validar</param>
-        /// <returns>El nombre si es válido</returns>
-        /// <exception cref="Exception">Si el nombre está vacío</exception>
-        private string ComprobarNombre(string nombre)
-        {
-            if (string.IsNullOrEmpty(nombre)) throw new Exception("El nombre del medicamento no puede estar vacío.");
-            return nombre;
-        }
 
-        /// <summary>
-        /// Valida que la descripción del medicamento no sea vacía ni nula.
-        /// </summary>
-        /// <param name="descripcion">Descripción a validar</param>
-        /// <returns>La descripción si es válida</returns>
-        /// <exception cref="Exception">Si la descripción está vacía</exception>
-        private string ComprobarDescripcion(string descripcion)
-        {
-            if (string.IsNullOrEmpty(descripcion)) throw new Exception("La descripción del medicamento no puede estar vacía.");
-            return descripcion;
-        }
-        #endregion
     }
 }

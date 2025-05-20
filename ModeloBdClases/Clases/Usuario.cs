@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModeloBdClases.Validaciones;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -75,7 +76,7 @@ namespace ModeloBdClases.Clases
             get => nombre;
             set
             {
-                nombre = ComprobarNombre(value); // Llamar a la validación
+                nombre = ValidadorDatos.ValidarNombre(value); // Llamar a la validación
             }
         }
 
@@ -84,7 +85,7 @@ namespace ModeloBdClases.Clases
             get => apellidos;
             set
             {
-                apellidos = ComprobarApellidos(value); // Llamar a la validación
+                apellidos = ValidadorDatos.ValidarApellidos(value); // Llamar a la validación
             }
         }
 
@@ -93,7 +94,7 @@ namespace ModeloBdClases.Clases
             get => email;
             set
             {
-                email = ComprobarEmail(value); // Llamar a la validación
+                email = ValidadorDatos.ValidarEmail(value); // Llamar a la validación
             }
         }
 
@@ -102,7 +103,7 @@ namespace ModeloBdClases.Clases
             get => contrasenia;
             set
             {
-                contrasenia = ComprobarContrasenia(value); // Llamar a la validación
+                contrasenia = ValidadorDatos.ValidarContrasenia(value); // Llamar a la validación
             }
         }
 
@@ -134,73 +135,7 @@ namespace ModeloBdClases.Clases
         public Color ColorActivacion => IsActiva ? Colors.Green : Colors.Red;
         #endregion
 
-        #region VALIDACIONES
-        /// <summary>
-        /// Comprueba que el nombre no contiene números ni caracteres especiales
-        /// </summary>
-        /// <returns>El nombre o los apellidos</returns>
-        /// <exception cref="Exception"></exception>
-        private string ComprobarNombre(string Nombre)
-        {
-            if (string.IsNullOrEmpty(Nombre)) throw new Exception("El nombre no puede estar vacío.");
-
-            // Expresión regular que permite letras, espacios, tildes y ñ/Ñ
-            Regex regex = new Regex(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ ]+$");
-            if (!regex.IsMatch(Nombre)) throw new Exception("El nombre no puede contener números ni caracteres especiales.");
-
-            return Nombre;
-        }
-
-        /// <summary>
-        /// Comprueba que los apellidos no contienen números ni caracteres especiales
-        /// </summary>
-        /// <param name="Apellido"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        private string ComprobarApellidos(string Apellido)
-        {
-            if (string.IsNullOrEmpty(Apellido)) throw new Exception("Los apellidos no pueden estar vacíos.");
-
-            // Expresión regular que permite letras, espacios, tildes y ñ/Ñ
-            Regex regex = new Regex(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ ]+$");
-            if (!regex.IsMatch(Apellido)) throw new Exception("Los apellidos no pueden contener números ni caracteres especiales.");
-
-            return Apellido;
-        }
-
-        /// <summary>
-        /// Comprueba que el email es valido
-        /// </summary>
-        /// <param name="correo">El email</param>
-        /// <returns> El email</returns>
-        /// <exception cref="Exception"></exception>
-        private string ComprobarEmail(string correo)
-        {
-            if (string.IsNullOrEmpty(correo))
-                throw new Exception("El email no puede estar vacío.");
-
-            // Regex simplificado: formato básico + extensiones comunes (.com, .es, .net, etc.)
-            Regex regex = new Regex(@"^[\w\.\-]+@[\w\-]+\.(com|es|net|org|edu|gov|mil|biz|info|io|co|uk|de|fr|it)$", RegexOptions.IgnoreCase);
-
-            if (!regex.IsMatch(correo))
-                throw new Exception("El email no tiene un formato válido o la extensión no está permitida.");
-
-            return correo;
-        }
-
-        /// <summary>
-        /// Comprueba que la contraseña tenga al menos 6 caracteres
-        /// </summary>
-        /// <param name="contrasenia"> La contraseña</param>
-        /// <returns> La contraseña</returns>
-        /// <exception cref="Exception"></exception>
-        public string ComprobarContrasenia(string contrasenia)
-        {
-            if (string.IsNullOrEmpty(contrasenia)) throw new Exception("La contraseña no puede estar vacía.");
-            if (contrasenia.Length < 6) throw new Exception("La contraseña debe tener al menos 6 caracteres.");
-
-            return contrasenia;
-        }
+        #region METODOS
 
         /// <summary>
         /// Metodo para notificar a la UI que una propiedad ha cambiado

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModeloBdClases.Validaciones;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,51 +32,24 @@ namespace ModeloBdClases.Clases
         public int Planta
         {
             get => planta;
-            set => planta = ComprobarPlanta(value);
+            set => planta = ValidadorDatos.ComprobarPlanta(value);
         }
 
         public int Habitacion
         {
             get => habitacion;
-            set => habitacion = ComprobarHabitacion(value);
+            set => habitacion = ValidadorDatos.ComprobarHabitacion(value);
         }
 
         public int Cama
         {
             get => cama;
-            set => cama = ComprobarCama(value);
+            set => cama = ValidadorDatos.ComprobarCama(value);
         }
         #endregion
 
         #region VALIDACIONES
-        /// <summary>
-        /// Valida que la planta sea un valor positivo.
-        /// </summary>
-        private int ComprobarPlanta(int planta)
-        {
-            if (planta <= 0) throw new Exception("La planta debe ser un número mayor a 0.");
-            if (planta > 26) throw new Exception("La planta debe ser un número menor a 26.");
-            return planta;
-        }
 
-        /// <summary>
-        /// Valida que la habitación sea un número positivo.
-        /// </summary>
-        private int ComprobarHabitacion(int habitacion)
-        {
-            if (habitacion <= 0) throw new Exception("La habitación debe ser un número mayor a 0.");
-            return habitacion;
-        }
-
-        /// <summary>
-        /// Valida que la cama sea un número positivo.
-        /// </summary>
-        private int ComprobarCama(int cama)
-        {
-            if (cama <= 0) throw new Exception("La cama debe ser un número mayor a 0.");
-            if (cama > 6) throw new Exception("La cama debe ser un número menor a 6.");
-            return cama;
-        }
         #endregion
 
     }

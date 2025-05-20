@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModeloBdClases.Validaciones;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,27 +60,12 @@ namespace ModeloBdClases.Clases
         /// </summary>
         public string Nombre
         {
-            get => ComprobarNombre(nombre);
-            set => nombre = value;
+            get => nombre;
+            set => nombre = ValidadorDatos.ComprobarNombreAlergia(nombre);
         }
 
         #endregion
 
-        #region METODOS
 
-        /// <summary>
-        /// Verifica que el nombre de la alergia no esté vacío ni nulo.
-        /// </summary>
-        /// <param name="nombre">El nombre de la alergia</param>
-        /// <returns>El nombre de la alergia si es válido</returns>
-        /// <exception cref="Exception">Si el nombre está vacío o nulo</exception>
-        private string ComprobarNombre(string nombre)
-        {
-            if (string.IsNullOrEmpty(nombre))
-                throw new Exception("El nombre de la alergia no puede estar vacío.");
-            return nombre;
-        }
-
-        #endregion
     }
 }

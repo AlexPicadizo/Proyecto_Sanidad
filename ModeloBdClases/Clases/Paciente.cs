@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.ComponentModel;
+using ModeloBdClases.Validaciones;
 
 namespace ModeloBdClases.Clases
 {
@@ -66,31 +67,31 @@ namespace ModeloBdClases.Clases
         public string Nombre
         {
             get => nombre;
-            set => nombre = ComprobarNombre(value);
+            set => nombre = ValidadorDatos.ComprobarNombre(value);
         }
 
         public string Apellidos
         {
             get => apellidos;
-            set => apellidos = ComprobarApellidos(value);
+            set => apellidos = ValidadorDatos.ComprobarApellidos(value);
         }
 
         public int Edad
         {
             get => edad;
-            set => edad = ComprobarEdad(value);
+            set => edad = ValidadorDatos.ComprobarEdad(value);
         }
 
         public string Dni
         {
             get => dni;
-            set => dni = ComprobarDni(value);
+            set => dni = ValidadorDatos.ComprobarDni(value);
         }
 
         public string GrupoSanguineo
         {
             get => grupoSanguineo;
-            set => grupoSanguineo = ComprobarGrupoSanguineo(value);
+            set => grupoSanguineo = ValidadorDatos.ComprobarGrupoSanguineo(value);
         }
 
         /// <summary>
@@ -120,7 +121,7 @@ namespace ModeloBdClases.Clases
         public DateTime FechaIngreso
         {
             get => fechaIngreso;
-            set => fechaIngreso = ComprobarFechaIngreso(value);
+            set => fechaIngreso = ValidadorDatos.ComprobarFechaIngreso(value);
         }
 
         #endregion
@@ -136,105 +137,5 @@ namespace ModeloBdClases.Clases
         }
         #endregion
 
-        #region VALIDACIONES
-        /// <summary>
-        /// Valida que el nombre contenga solo letras, tildes y espacios.
-        /// </summary>
-        private string ComprobarNombre(string Nombre)
-        {
-            if (string.IsNullOrEmpty(Nombre)) throw new Exception("El nombre no puede estar vacío.");
-            Regex regex = new Regex(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ ]+$");
-            if (!regex.IsMatch(Nombre)) throw new Exception("El nombre no puede contener números ni caracteres especiales.");
-            return Nombre;
-        }
-
-        /// <summary>
-        /// Valida que los apellidos contengan solo letras, tildes y espacios.
-        /// </summary>
-        private string ComprobarApellidos(string Apellido)
-        {
-            if (string.IsNullOrEmpty(Apellido)) throw new Exception("Los apellidos no pueden estar vacíos.");
-            Regex regex = new Regex(@"^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ ]+$");
-            if (!regex.IsMatch(Apellido)) throw new Exception("Los apellidos no pueden contener números ni caracteres especiales.");
-            return Apellido;
-        }
-
-        /// <summary>
-        /// Valida que la edad sea un valor mayor a cero.
-        /// </summary>
-        private int ComprobarEdad(int edad)
-        {
-            if (edad <= 0) throw new Exception("La edad debe ser mayor a 0.");
-
-            // Validar la edad antes de convertir (evitar FormatException)
-            if (!int.TryParse(edad.ToString(), out edad) || edad <= 0)
-            {
-                throw new Exception("La edad debe ser un número mayor a 0.");
-            }
-
-            return edad;
-        }
-
-        /// <summary>
-        /// Comprueba que el DNI tenga el formato correcto
-        /// </summary>
-        /// <param name="dni"> El DNI</param>
-        /// <returns> El DNI</returns>
-        /// <exception cref="Exception"> Si no es correcto lo notifica </exception>
-        private string ComprobarDni(string dni)
-        {
-            // 1) Comprobar que no esté vacío
-            if (string.IsNullOrEmpty(dni))
-                throw new Exception("El DNI no puede estar vacío.");
-
-            // 2) Validar formato básico: 8 dígitos seguidos de una letra
-            if (!Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
-                throw new Exception("El DNI debe tener 8 números seguidos de una letra (Ejemplo: 12345678A).");
-
-            // 3) Separar la parte numérica y la letra
-            string numeroStr = dni.Substring(0, 8);
-            char letra = char.ToUpper(dni[8]);
-
-            // 4) Calcular índice usando el resto de la división entre 23
-            int numero = int.Parse(numeroStr);
-            int indice = numero % 23;
-
-            // 5) Tabla de letras correspondiente al DNI español
-            const string tablaLetras = "TRWAGMYFPDXBNJZSQVHLCKE";
-            char letraCorrecta = tablaLetras[indice];
-
-            // 6) Comparar la letra calculada con la proporcionada
-            if (letra != letraCorrecta)
-                throw new Exception($"Letra incorrecta del DNI. La letra correcta para {numeroStr} es '{letraCorrecta}'.");
-
-            // 7) Devolver en mayúsculas
-            return numeroStr + letraCorrecta;
-        }
-
-        /// <summary>
-        /// Valida que el grupo sanguíneo sea uno de los valores aceptados.
-        /// </summary>
-        private string ComprobarGrupoSanguineo(string grupo)
-        {
-
-            if (string.IsNullOrEmpty(grupo))
-                throw new Exception("Debe seleccionar un grupo sanguíneo.");
-
-            string[] gruposValidos = { "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" };
-            if (Array.IndexOf(gruposValidos, grupo.ToUpper()) == -1)
-                throw new Exception("El grupo sanguíneo debe ser uno de los siguientes: A+, A-, B+, B-, AB+, AB-, O+, O-.");
-            return grupo.ToUpper();
-        }
-
-        private DateTime ComprobarFechaIngreso(DateTime fecIngreso)
-        {
-
-            if (fecIngreso > DateTime.Now) throw new Exception("Error: La fecha de ingreso no puede ser futura");
-
-            return fecIngreso;
-
-        }
-
-        #endregion
     }
 }

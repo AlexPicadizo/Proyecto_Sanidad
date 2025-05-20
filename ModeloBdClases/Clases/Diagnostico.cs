@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModeloBdClases.Validaciones;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,7 +72,7 @@ namespace ModeloBdClases.Clases
         public string Nombre
         {
             get => nombre;
-            set => nombre = ComprobarNombre(value);
+            set => nombre = ValidadorDatos.ComprobarNombreDiagnostico(value);
         }
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace ModeloBdClases.Clases
         public string Descripcion
         {
             get => descripcion;
-            set => descripcion = ComprobarDescripcion(value);
+            set => descripcion = ValidadorDatos.ComprobarDescripcionDiagnostico(value);
         }
 
         /// <summary>
@@ -89,44 +90,11 @@ namespace ModeloBdClases.Clases
         public DateTime FechaDiagnostico
         {
             get => fechaDiagnostico;
-            set => fechaDiagnostico = ComprobarFecha(value);
+            set => fechaDiagnostico = ValidadorDatos.ComprobarFechaDiagnostico(value);
         }
 
         #endregion
 
-        #region VALIDACIONES
-
-        /// <summary>
-        /// Verifica que la fecha del diagnóstico no sea futura.
-        /// </summary>
-        private DateTime ComprobarFecha(DateTime fechaDiagnostico)
-        {
-            if (fechaDiagnostico > DateTime.Now)
-                throw new Exception("La fecha del diagnóstico no puede ser futura.");
-            return fechaDiagnostico;
-        }
-
-        /// <summary>
-        /// Verifica que el nombre no esté vacío.
-        /// </summary>
-        private string ComprobarNombre(string nombre)
-        {
-            if (string.IsNullOrEmpty(nombre))
-                throw new Exception("El nombre del diagnóstico no puede estar vacío.");
-            return nombre;
-        }
-
-        /// <summary>
-        /// Verifica que la descripción no esté vacía.
-        /// </summary>
-        private string ComprobarDescripcion(string descripcion)
-        {
-            if (string.IsNullOrEmpty(descripcion))
-                throw new Exception("La descripción del diagnóstico no puede estar vacía.");
-            return descripcion;
-        }
-
-        #endregion
     }
 }
 

@@ -664,12 +664,6 @@ namespace ModeloBdClases.BaseDatos
         /// <exception cref="Exception">Se lanza si hay campos vacíos o un error en la inserción</exception>
         public bool AgregarUsuario(string nombre, string apellidos, string correo, string contrasenia, bool isAdmin)
         {
-            // Validamos que ningún campo obligatorio esté vacío
-            if (string.IsNullOrWhiteSpace(nombre)) throw new Exception("El nombre no puede estar vacío.");
-            if (string.IsNullOrWhiteSpace(apellidos)) throw new Exception("Los apellidos no pueden estar vacíos.");
-            if (string.IsNullOrWhiteSpace(correo)) throw new Exception("El correo no puede estar vacío.");
-            if (string.IsNullOrWhiteSpace(contrasenia)) throw new Exception("La contraseña no puede estar vacía.");
-
             try
             {
                 // Abrimos la conexión a la base de datos
@@ -699,6 +693,13 @@ namespace ModeloBdClases.BaseDatos
                         return true; // Operación exitosa
                     }
                 }
+            }
+            catch (MySqlException ex)
+            {
+                if (ex.Number == 1062) // Error por entrada duplicada (correo ya existe)
+                    throw new Exception("El correo ya está registrado. Usa otro diferente.");
+                else
+                    throw new Exception("Error en la base de datos: " + ex.Message);
             }
             catch (Exception ex)
             {

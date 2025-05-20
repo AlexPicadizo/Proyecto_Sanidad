@@ -8,30 +8,23 @@
 
             <!-- Colores personalizados para la aplicación -->
             <Color x:Key="PrimaryColor">#2C7A7B</Color>
-            <!-- Color primario para botones principales y acentos -->
             <Color x:Key="SecondaryColor">#4299E1</Color>
-            <!-- Color secundario para botones alternativos -->
+            <Color x:Key="SubTitleColor">#4FD1C5</Color>
             <Color x:Key="BackgroundLight">#F7FAFC</Color>
-            <!-- Fondo claro para entradas y otros elementos -->
             <Color x:Key="TextDark">#2D3748</Color>
-            <!-- Color principal del texto -->
             <Color x:Key="TextSecondary">#718096</Color>
-            <!-- Color secundario del texto, usado en placeholders -->
             <Color x:Key="DisabledBackground">#E9E9E9</Color>
-            <!-- Fondo para controles deshabilitados -->
             <Color x:Key="DisabledText">#9E9E9E</Color>
-            <!-- Texto para controles deshabilitados -->
             <Color x:Key="CardBackground">#EDF2F7</Color>
-            <!-- Fondo para tarjetas u otras superficies destacadas -->
+            <Color x:Key="AccentBackground">#E6FFFA</Color>
+            <Color x:Key="AccentBorder">#B2F5EA</Color>
 
-            <!-- Estilo base para etiquetas (Label) -->
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource TextDark}" />
                 <Setter Property="FontSize" Value="16" />
                 <Setter Property="Margin" Value="0,0,0,5"/>
             </Style>
 
-            <!-- Estilo base para controles DatePicker -->
             <Style TargetType="DatePicker" x:Key="BaseDatePicker">
                 <Setter Property="BackgroundColor" Value="{StaticResource BackgroundLight}"/>
                 <Setter Property="TextColor" Value="{StaticResource TextDark}"/>
@@ -40,7 +33,6 @@
                 <Setter Property="Margin" Value="0,0,0,15"/>
             </Style>
 
-            <!-- Estilo base para controles Entry (campos de texto de una sola línea) -->
             <Style TargetType="Entry" x:Key="BaseEntry">
                 <Setter Property="BackgroundColor" Value="{StaticResource BackgroundLight}"/>
                 <Setter Property="TextColor" Value="{StaticResource TextDark}"/>
@@ -50,7 +42,6 @@
                 <Setter Property="Margin" Value="0,0,0,15"/>
             </Style>
 
-            <!-- Estilo base para controles Editor (campos de texto multilínea) -->
             <Style TargetType="Editor" x:Key="BaseEditor">
                 <Setter Property="BackgroundColor" Value="{StaticResource BackgroundLight}"/>
                 <Setter Property="TextColor" Value="{StaticResource TextDark}"/>
@@ -60,7 +51,6 @@
                 <Setter Property="AutoSize" Value="TextChanges"/>
             </Style>
 
-            <!-- Estilo base para controles Picker (listas desplegables) -->
             <Style TargetType="Picker" x:Key="BasePicker">
                 <Setter Property="BackgroundColor" Value="{StaticResource BackgroundLight}"/>
                 <Setter Property="TextColor" Value="{StaticResource TextDark}"/>
@@ -72,7 +62,6 @@
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
 
-            <!-- Estilo base para todos los botones -->
             <Style TargetType="Button" x:Key="BaseButton">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="CornerRadius" Value="10"/>
@@ -82,17 +71,14 @@
                 <Setter Property="Margin" Value="5"/>
             </Style>
 
-            <!-- Estilo para botones primarios -->
             <Style TargetType="Button" x:Key="PrimaryButton" BasedOn="{StaticResource BaseButton}">
                 <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
             </Style>
 
-            <!-- Estilo para botones secundarios -->
             <Style TargetType="Button" x:Key="SecondaryButton" BasedOn="{StaticResource BaseButton}">
                 <Setter Property="BackgroundColor" Value="{StaticResource SecondaryColor}"/>
             </Style>
 
-            <!-- Estilo para botones deshabilitados -->
             <Style TargetType="Button" x:Key="DisabledButton" BasedOn="{StaticResource BaseButton}">
                 <Setter Property="BackgroundColor" Value="{StaticResource DisabledBackground}"/>
                 <Setter Property="TextColor" Value="{StaticResource DisabledText}"/>
@@ -101,137 +87,63 @@
         </ResourceDictionary>
     </ContentView.Resources>
 
-    <!-- Contenedor principal -->
     <Grid>
         <ScrollView>
-            <!-- Tarjeta principal con diseño de borde y sombra -->
             <Frame CornerRadius="15" Padding="25" Margin="20"
                    BackgroundColor="White" BorderColor="{StaticResource SecondaryColor}"
                    HasShadow="True">
 
                 <VerticalStackLayout Spacing="20">
 
-                    <!-- Título principal -->
                     <Label Text="Gestión de Diagnósticos"
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center"
-                       TextColor="{StaticResource PrimaryColor}"
-                       Margin="0,0,0,10"/>
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="{StaticResource PrimaryColor}"
+                           Margin="0,0,0,10"/>
 
-                    <!-- Sección para agregar nuevo diagnóstico -->
-                    <Label Text="Nuevo Diagnóstico" FontAttributes="Bold" FontSize="Medium"/>
+                    <Label Text="Nuevo Diagnóstico"
+                           FontAttributes="Bold"
+                           FontSize="20"
+                           TextColor="{StaticResource SubTitleColor}"/>
 
-                    <!-- Campo de texto para el nombre del diagnóstico -->
                     <Entry x:Name="entryNombreDiagnostico" Placeholder="Nombre del diagnóstico" Style="{StaticResource BaseEntry}"/>
-
-                    <!-- Campo de texto largo para descripción del diagnóstico -->
                     <Editor x:Name="editorDescripcionDiagnostico" Placeholder="Descripción" Style="{StaticResource BaseEditor}"/>
-
-                    <!-- Selector de fecha para el diagnóstico -->
                     <DatePicker x:Name="datePickerFechaDiagnostico" Style="{StaticResource BaseDatePicker}" />
 
-                    <!-- Botones de acción: Agregar, Modificar, Agregar tratamiento -->
                     <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
-
-                        <!-- Botón para agregar nuevo diagnóstico -->
-                        <Button Text="Agregar Diagnóstico"
-                            Clicked="OnAgregarDiagnostico"
-                            Style="{StaticResource PrimaryButton}"
-                            Grid.Column="0"/>
-
-                        <!-- Botón para modificar (inicialmente deshabilitado) -->
-                        <Button x:Name="btnModificar"
-                            Text="Modificar"
-                            Clicked="OnModificarDiagnostico"
-                            IsEnabled="False"
-                            Style="{StaticResource DisabledButton}"
-                            Grid.Column="1"/>
-
-                        <!-- Botón para agregar tratamiento (inicialmente deshabilitado) -->
-                        <Button x:Name="btnAgregarTratamiento"
-                            Text="Agregar Tratamiento"
-                            Clicked="OnAgregarTratamiento"
-                            IsEnabled="False"
-                            Style="{StaticResource DisabledButton}"
-                            Grid.Column="2"/>
+                        <Button Text="Agregar Diagnóstico" Clicked="OnAgregarDiagnostico" Style="{StaticResource PrimaryButton}" Grid.Column="0"/>
+                        <Button x:Name="btnModificar" Text="Modificar" Clicked="OnModificarDiagnostico" IsEnabled="False" Style="{StaticResource DisabledButton}" Grid.Column="1"/>
+                        <Button x:Name="btnAgregarTratamiento" Text="Agregar Tratamiento" Clicked="OnAgregarTratamiento" IsEnabled="False" Style="{StaticResource DisabledButton}" Grid.Column="2"/>
                     </Grid>
 
-                    <!-- Separador visual -->
                     <BoxView HeightRequest="1" Color="Gray" Margin="0,10"/>
 
-                    <!-- Sección de diagnósticos existentes -->
-                    <Label Text="Diagnósticos existentes" FontAttributes="Bold" FontSize="Medium"/>
+                    <Label Text="Diagnósticos existentes" FontAttributes="Bold" FontSize="20" TextColor="{StaticResource SubTitleColor}"/>
 
-                    <!-- Contenedor con Picker para seleccionar diagnóstico -->
-                    <Frame CornerRadius="10"
-                       Padding="5"
-                       BorderColor="{StaticResource SecondaryColor}"
-                       BackgroundColor="{StaticResource BackgroundLight}"
-                       HasShadow="True">
-
-                        <!-- Lista desplegable de diagnósticos -->
-                        <Picker x:Name="pickerDiagnosticos"
-                            ItemDisplayBinding="{Binding Nombre}"
-                            SelectedIndexChanged="OnDiagnosticoSeleccionado"
-                            TextColor="Black"
-                            FontSize="16"
-                            HeightRequest="40"
-                            HorizontalOptions="FillAndExpand"/>
+                    <Frame CornerRadius="10" Padding="5" BorderColor="{StaticResource SecondaryColor}" BackgroundColor="{StaticResource BackgroundLight}" HasShadow="True">
+                        <Picker x:Name="pickerDiagnosticos" ItemDisplayBinding="{Binding Nombre}" SelectedIndexChanged="OnDiagnosticoSeleccionado" TextColor="Black" FontSize="16" HeightRequest="40" HorizontalOptions="FillAndExpand"/>
                     </Frame>
 
-                    <!-- Sección de detalles del diagnóstico seleccionado -->
-                    <StackLayout x:Name="layoutDetalleDiagnostico" IsVisible="False" Spacing="10" Padding="10"
-                             BackgroundColor="{StaticResource CardBackground}" 
-                             Margin="0,10,0,0">
-
-                        <!-- Encabezado con nombre del diagnóstico y botón de eliminar -->
+                    <StackLayout x:Name="layoutDetalleDiagnostico" IsVisible="False" Spacing="10" Padding="10" BackgroundColor="{StaticResource CardBackground}" Margin="0,10,0,0">
                         <Grid ColumnDefinitions="*, Auto">
-                            <Label x:Name="labelNombreDiagnostico"
-                               FontAttributes="Bold"
-                               FontSize="18"
-                               TextColor="{StaticResource PrimaryColor}"
-                               Grid.Column="0"
-                               VerticalOptions="Center"/>
-
-                            <!-- Botón para eliminar diagnóstico -->
-                            <Button Text="Eliminar"
-                                Grid.Column="1"
-                                BackgroundColor="#E74C3C"
-                                TextColor="White"
-                                FontSize="14"
-                                FontAttributes="Bold"
-                                Clicked="OnEliminarDiagnostico"
-                                HorizontalOptions="End"/>
+                            <Label x:Name="labelNombreDiagnostico" FontAttributes="Bold" FontSize="18" TextColor="{StaticResource PrimaryColor}" Grid.Column="0" VerticalOptions="Center"/>
+                            <Button Text="Eliminar" Grid.Column="1" BackgroundColor="#E74C3C" TextColor="White" FontSize="14" FontAttributes="Bold" Clicked="OnEliminarDiagnostico" HorizontalOptions="End"/>
                         </Grid>
 
-                        <!-- Texto y contenido de la descripción -->
-                        <Label Text="Descripción:"
-                           FontAttributes="Bold"
-                           FontSize="14"
-                           TextColor="{StaticResource TextSecondary}" />
-                        <Label x:Name="labelDescripcionDiagnostico"
-                           FontSize="16"
-                           LineBreakMode="WordWrap"
-                           TextColor="{StaticResource TextDark}" />
+                        <Label Text="Descripción:" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource TextSecondary}" />
+                        <Label x:Name="labelDescripcionDiagnostico" FontSize="16" LineBreakMode="WordWrap" TextColor="{StaticResource TextDark}" />
 
-                        <!-- Texto y contenido de la fecha -->
-                        <Label Text="Fecha del diagnóstico:"
-                           FontAttributes="Bold"
-                           FontSize="14"
-                           TextColor="{StaticResource TextSecondary}" />
-                        <Label x:Name="labelFechaDiagnostico"
-                           FontSize="16"
-                           TextColor="{StaticResource TextDark}" />
+                        <Label Text="Fecha del diagnóstico:" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource TextSecondary}" />
+                        <Label x:Name="labelFechaDiagnostico" FontSize="16" TextColor="{StaticResource TextDark}" />
 
-                        <!-- Texto para tratamientos relacionados -->
-                        <Label Text="Tratamientos:"
-                           FontAttributes="Bold"
-                           FontSize="14"
-                           TextColor="{StaticResource TextSecondary}" />
+                        <Label Text="Tratamientos:" FontAttributes="Bold" FontSize="18" TextColor="{StaticResource PrimaryColor}" />
 
-                        <!-- Contenedor para tarjetas de tratamiento -->
-                        <StackLayout x:Name="layoutTratamientos" Spacing="15" Margin="0,5,0,0"/>
+                        <!-- Mejora visual de tratamientos -->
+                        <StackLayout x:Name="layoutTratamientos" Spacing="15">
+                            <!-- Aquí se agregan dinámicamente los frames de tratamientos -->
+                            <!-- Cada uno debe tener diseño consistente -->
+                        </StackLayout>
                     </StackLayout>
 
                 </VerticalStackLayout>

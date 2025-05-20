@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModeloBdClases.Validaciones;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -39,31 +40,15 @@ namespace ModeloBdClases.Clases
         public DateTime Fecha
         {
             get => fecha;
-            set => fecha = ValidarFecha(value);
+            set => fecha = ValidadorDatos.ValidarFecha(value);
         }
 
         public string Contenido
         {
             get => contenido;
-            set => contenido = ComprobarContenido(value);
+            set => contenido = ValidadorDatos.ComprobarContenido(value);
         }
         #endregion
 
-        #region VALIDACIONES
-        private string ComprobarContenido(string contenido)
-        {
-            if (string.IsNullOrEmpty(contenido))
-                throw new Exception("El contenido de la nota no puede estar vacío.");
-            return contenido;
-        }
-
-        private DateTime ValidarFecha(DateTime fecha)
-        {
-            if (fecha > DateTime.Now)
-                throw new Exception("La fecha de la nota no puede ser futura.");
-            if(fecha.Equals(null)) throw new Exception("La fecha de la nota no puede estar vacía.");
-            return fecha;
-        }
-        #endregion
     }
 }

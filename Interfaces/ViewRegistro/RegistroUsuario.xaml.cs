@@ -32,15 +32,6 @@ public partial class RegistroUsuario : ContentPage
     {
         try
         {
-            // Validación básica de campos requeridos
-            if (string.IsNullOrWhiteSpace(EntryNombre.Text) ||
-                string.IsNullOrWhiteSpace(EntryApellidos.Text) ||
-                string.IsNullOrWhiteSpace(EntryEmail.Text) ||
-                string.IsNullOrWhiteSpace(EntryContrasenia.Text))
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Todos los campos son obligatorios", "Aceptar");
-                return;
-            }
 
             // Crear el objeto Usuario con los datos ingresados
             Usuario nuevoUsuario;
@@ -68,27 +59,34 @@ public partial class RegistroUsuario : ContentPage
 
             if (!confirmar) return;
 
+            try
+            {
+                bool resultado = await Task.Run(() =>
+                    _metodosBD.AgregarUsuario(
+                        nuevoUsuario.Nombre,
+                        nuevoUsuario.Apellidos,
+                        nuevoUsuario.Email,
+                        nuevoUsuario.Contrasenia,
+                        nuevoUsuario.IsAdmin));
+
+                if (resultado)
+                {
+                    ResetearFormulario(); // Limpia el formulario tras éxito
+                    await Application.Current.MainPage.DisplayAlert("Éxito", "Usuario registrado correctamente", "Aceptar");
+
+                    // Redirección automática al login
+                    await Shell.Current.GoToAsync("//Login");
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Aceptar");
+                return;
+            }
             // Registro del usuario en segundo plano
-            bool resultado = await Task.Run(() =>
-                _metodosBD.AgregarUsuario(
-                    nuevoUsuario.Nombre,
-                    nuevoUsuario.Apellidos,
-                    nuevoUsuario.Email,
-                    nuevoUsuario.Contrasenia,
-                    nuevoUsuario.IsAdmin));
 
-            if (resultado)
-            {
-                ResetearFormulario(); // Limpia el formulario tras éxito
-                await Application.Current.MainPage.DisplayAlert("Éxito", "Usuario registrado correctamente", "Aceptar");
-
-                // Redirección automática al login
-                await Shell.Current.GoToAsync("//Login");
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "No se pudo registrar el usuario", "Aceptar");
-            }
         }
         catch (Exception ex)
         {
