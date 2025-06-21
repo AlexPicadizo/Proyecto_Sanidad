@@ -131,6 +131,7 @@ namespace ModeloBdClases.Validaciones
         public static int ComprobarEdad(int edad)
         {
             if (edad <= 0) throw new Exception("La edad debe ser mayor a 0.");
+            if (edad > 120) throw new Exception("La edad debe ser menor a 120.");
 
             // Validar la edad antes de convertir (evitar FormatException)
             if (!int.TryParse(edad.ToString(), out edad) || edad <= 0)
@@ -183,7 +184,7 @@ namespace ModeloBdClases.Validaciones
         public static string ComprobarGrupoSanguineo(string grupo)
         {
 
-            if (string.IsNullOrEmpty(grupo))
+            if (string.IsNullOrWhiteSpace(grupo))
                 throw new Exception("Debe seleccionar un grupo sanguíneo.");
 
             string[] gruposValidos = { "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" };
@@ -288,12 +289,12 @@ namespace ModeloBdClases.Validaciones
         /// <param name="nombre">El nombre de la alergia</param>
         /// <returns>El nombre de la alergia si es válido</returns>
         /// <exception cref="Exception">Si el nombre está vacío o nulo</exception>
-        public static string ComprobarNombreAlergia(string nombre)
+        /*public static string ComprobarNombreAlergia(string nombre)
         {
             if (string.IsNullOrEmpty(nombre))
                 throw new Exception("El nombre de la alergia no puede estar vacío.");
             return nombre;
-        }
+        }*/
 
         #endregion
     }

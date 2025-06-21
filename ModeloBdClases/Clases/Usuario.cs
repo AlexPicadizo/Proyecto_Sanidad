@@ -22,6 +22,9 @@ namespace ModeloBdClases.Clases
         #endregion
 
         #region CONSTRUCTORES
+
+        public Usuario() { }
+
         /// <summary>
         /// Constructor con los parámetros necesarios para el login
         /// </summary>
@@ -67,6 +70,19 @@ namespace ModeloBdClases.Clases
             Contrasenia = contrasenia;
             IsAdmin = isAdmin;
             IsActiva = isActiva;
+        }
+
+        public static Usuario DesdeBaseDatos(string nombre, string apellidos, string email, string hash, bool isAdmin, bool isActiva)
+        {
+            return new Usuario
+            {
+                nombre = nombre,
+                apellidos = apellidos,
+                email = email,
+                contrasenia = hash, // ⚠️ se asigna directamente al campo privado sin pasar por la propiedad
+                isAdmin = isAdmin,
+                isActiva = isActiva
+            };
         }
         #endregion
 

@@ -37,11 +37,12 @@ public partial class RegistroUsuario : ContentPage
             Usuario nuevoUsuario;
             try
             {
+
                 nuevoUsuario = new Usuario(
                     EntryNombre.Text,
                     EntryApellidos.Text,
                     EntryEmail.Text,
-                    EntryContrasenia.Text,
+                    EntryContrasenia.Text, 
                     false);
             }
             catch (Exception ex)
@@ -61,12 +62,14 @@ public partial class RegistroUsuario : ContentPage
 
             try
             {
+                string hash = Seguridad.GenerarHash(nuevoUsuario.Contrasenia);
+
                 bool resultado = await Task.Run(() =>
                     _metodosBD.AgregarUsuario(
                         nuevoUsuario.Nombre,
                         nuevoUsuario.Apellidos,
                         nuevoUsuario.Email,
-                        nuevoUsuario.Contrasenia,
+                        hash,
                         nuevoUsuario.IsAdmin));
 
                 if (resultado)

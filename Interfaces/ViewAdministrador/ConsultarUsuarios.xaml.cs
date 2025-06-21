@@ -44,7 +44,7 @@ public partial class ConsultarUsuarios : ContentView
         try
         {
             // 1. Obtener todos los usuarios de la base de datos. Si no hay usuarios, se asigna una lista vacía.
-            _todosLosUsuarios = metodosBD.ObtenerUsuarios() ?? new List<Usuario>();
+            _todosLosUsuarios = metodosBD.ObtenerUsuarios();
 
             // Verificamos que la lista de usuarios no sea nula
             if (_todosLosUsuarios != null)

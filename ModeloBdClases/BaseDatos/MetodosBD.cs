@@ -1,11 +1,6 @@
 ﻿using ModeloBdClases.Clases;
 using MySqlConnector;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics;
 
 namespace ModeloBdClases.BaseDatos
 {
@@ -24,7 +19,7 @@ namespace ModeloBdClases.BaseDatos
             using (var conexion = BdApi.ConexionBd()) // Establecemos la conexión con la base de datos.
             {
                 conexion.Open(); // Abrimos la conexión.
-                string query = "SELECT id, nombre FROM alergias"; // Consulta SQL para obtener todas las alergias.
+                string query = "SELECT id, nombre FROM Alergias"; // Consulta SQL para obtener todas las alergias.
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conexion)) // Preparamos el comando con la consulta.
                 using (MySqlDataReader reader = cmd.ExecuteReader()) // Ejecutamos la consulta y leemos los resultados.
@@ -54,7 +49,7 @@ namespace ModeloBdClases.BaseDatos
                 conexion.Open(); // Abrimos la conexión.
 
                 // Verifica si la relación ya existe para evitar duplicados.
-                string checkQuery = "SELECT COUNT(*) FROM paciente_alergias WHERE paciente_id = @pacienteId AND alergia_id = @alergiaId";
+                string checkQuery = "SELECT COUNT(*) FROM Paciente_Alergias WHERE paciente_id = @pacienteId AND alergia_id = @alergiaId";
                 using (var checkCmd = new MySqlCommand(checkQuery, conexion))
                 {
                     checkCmd.Parameters.AddWithValue("@pacienteId", pacienteId);
@@ -66,7 +61,7 @@ namespace ModeloBdClases.BaseDatos
                 }
 
                 // Si no existe la relación, la insertamos.
-                string insertQuery = "INSERT INTO paciente_alergias (paciente_id, alergia_id) VALUES (@pacienteId, @alergiaId)";
+                string insertQuery = "INSERT INTO Paciente_Alergias (paciente_id, alergia_id) VALUES (@pacienteId, @alergiaId)";
                 using (var insertCmd = new MySqlCommand(insertQuery, conexion))
                 {
                     insertCmd.Parameters.AddWithValue("@pacienteId", pacienteId);
@@ -86,7 +81,7 @@ namespace ModeloBdClases.BaseDatos
             {
                 conexion.Open(); // Abrimos la conexión.
 
-                string deleteQuery = "DELETE FROM paciente_alergias WHERE paciente_id = @pacienteId AND alergia_id = @alergiaId";
+                string deleteQuery = "DELETE FROM Paciente_Alergias WHERE paciente_id = @pacienteId AND alergia_id = @alergiaId";
                 using (var cmd = new MySqlCommand(deleteQuery, conexion)) // Preparamos el comando de eliminación.
                 {
                     cmd.Parameters.AddWithValue("@pacienteId", pacienteId);
@@ -110,7 +105,7 @@ namespace ModeloBdClases.BaseDatos
 
                 string query = @"SELECT a.id, a.nombre
                          FROM Alergias a
-                         JOIN paciente_alergias pa ON a.id = pa.alergia_id
+                         JOIN Paciente_Alergias pa ON a.id = pa.alergia_id
                          WHERE pa.paciente_id = @pacienteId"; // Consulta SQL con JOIN para obtener las alergias del paciente.
 
                 using (var cmd = new MySqlCommand(query, conexion)) // Preparamos el comando con la consulta.
@@ -319,6 +314,7 @@ namespace ModeloBdClases.BaseDatos
 
                 using (MySqlConnection conexion = BdApi.ConexionBd())
                 {
+
                     conexion.Open();
                     const string query = 
                         @"INSERT INTO Pacientes 
@@ -474,50 +470,49 @@ namespace ModeloBdClases.BaseDatos
         /// <exception cref="Exception">Se lanza si los campos están vacíos o las credenciales son inválidas</exception>
         public Usuario ObtenerUsuario(string email, string contrasenia)
         {
-            // Validamos que el email no esté vacío
             if (string.IsNullOrWhiteSpace(email)) throw new Exception("El email no puede estar vacío.");
-
-            // Validamos que la contraseña no esté vacía
             if (string.IsNullOrWhiteSpace(contrasenia)) throw new Exception("La contraseña no puede estar vacía.");
 
-            Usuario user = null; // Inicializamos el objeto usuario
+            Usuario user = null;
 
-            // Abrimos la conexión a la base de datos
             using (MySqlConnection conexion = BdApi.ConexionBd())
             {
-                conexion.Open(); // Abrimos conexión
+                conexion.Open();
 
-                // Creamos la consulta SQL con parámetros
-                MySqlCommand consulta = new MySqlCommand("SELECT * FROM Usuarios WHERE email = @Email AND contrasenia = @Contrasenia", conexion);
-                consulta.Parameters.AddWithValue("@Email", email); // Asignamos el valor del email
-                consulta.Parameters.AddWithValue("@Contrasenia", contrasenia); // Asignamos el valor de la contraseña
+                System.Diagnostics.Debug.WriteLine("Contraseña generada: " + contrasenia);
 
-                // Ejecutamos la consulta y leemos los resultados
+
+                // Hasheamos la contraseña que ha introducido el usuario
+                string hashEntrada = Seguridad.GenerarHash(contrasenia);
+                System.Diagnostics.Debug.WriteLine("Hash generado: " + hashEntrada);
+
+                // Consulta para verificar email y contraseña hash
+                MySqlCommand consulta = new MySqlCommand("SELECT * FROM Usuarios WHERE email = @Email AND contrasenia = @Hash", conexion);
+                consulta.Parameters.AddWithValue("@Email", email);
+                consulta.Parameters.AddWithValue("@Hash", hashEntrada);
+
                 using (MySqlDataReader lectorBd = consulta.ExecuteReader())
                 {
-                    // Si hay resultados, creamos el objeto usuario con los datos
                     if (lectorBd.Read())
                     {
-                        user = new Usuario(
+                        user = Usuario.DesdeBaseDatos(
                             lectorBd.GetString(1),  // nombre
                             lectorBd.GetString(2),  // apellidos
                             lectorBd.GetString(3),  // email
-                            lectorBd.GetString(4),  // contrasenia
-                            lectorBd.GetBoolean(5),  // isAdmin
-                            lectorBd.GetBoolean(6)
-
+                            lectorBd.GetString(4),  // contrasenia (hash)
+                            lectorBd.GetBoolean(5), // isAdmin
+                            lectorBd.GetBoolean(6)  // isActiva
                         );
                     }
                 }
 
-                conexion.Close(); // Cerramos la conexión
+                conexion.Close();
             }
 
-            // Si no se encontró un usuario, lanzamos una excepción
             if (user == null)
                 throw new Exception("Usuario no encontrado o credenciales incorrectas.");
 
-            return user; // Devolvemos el usuario
+            return user;
         }
         #endregion
 
@@ -544,19 +539,18 @@ namespace ModeloBdClases.BaseDatos
                     while (lectorBd.Read())
                     {
                         // Por cada usuario encontrado, lo añadimos a la lista
-                        usuarios.Add(new Usuario(
-                            lectorBd.GetString(1),  // nombre
-                            lectorBd.GetString(2),  // apellidos
-                            lectorBd.GetString(3),  // email
-                            lectorBd.GetString(4),  // contrasenia
-                            lectorBd.GetBoolean(5),  // isAdmin
+                        usuarios.Add(Usuario.DesdeBaseDatos(
+                            lectorBd.GetString(1),
+                            lectorBd.GetString(2),
+                            lectorBd.GetString(3),
+                            lectorBd.GetString(4),
+                            lectorBd.GetBoolean(5),
                             lectorBd.GetBoolean(6)
-
                         ));
                     }
                 }
 
-                // La conexión se cierra automáticamente por el using
+                conexion.Close();
             }
 
             return usuarios; // Devolvemos la lista de usuarios
@@ -586,20 +580,18 @@ namespace ModeloBdClases.BaseDatos
                     while (lectorBd.Read())
                     {
                         // Por cada usuario encontrado, lo añadimos a la lista
-                        usuarios.Add(new Usuario(
-                            lectorBd.GetString(1),  // nombre
-                            lectorBd.GetString(2),  // apellidos
-                            lectorBd.GetString(3),  // email
-                            lectorBd.GetString(4),  // contrasenia
-                            lectorBd.GetBoolean(5),  // isAdmin
+                        usuarios.Add(Usuario.DesdeBaseDatos(
+                            lectorBd.GetString(1),
+                            lectorBd.GetString(2),
+                            lectorBd.GetString(3),
+                            lectorBd.GetString(4),
+                            lectorBd.GetBoolean(5),
                             lectorBd.GetBoolean(6)
-
-
                         ));
                     }
                 }
 
-                // La conexión se cierra automáticamente por el using
+                conexion.Close();
             }
 
             return usuarios; // Devolvemos la lista de usuarios
@@ -666,6 +658,7 @@ namespace ModeloBdClases.BaseDatos
         {
             try
             {
+
                 // Abrimos la conexión a la base de datos
                 using (MySqlConnection conexion = BdApi.ConexionBd())
                 {
@@ -681,7 +674,7 @@ namespace ModeloBdClases.BaseDatos
                         cmd.Parameters.AddWithValue("@nombre", nombre.Trim());
                         cmd.Parameters.AddWithValue("@apellidos", apellidos.Trim());
                         cmd.Parameters.AddWithValue("@correo", correo.Trim().ToLower());
-                        cmd.Parameters.AddWithValue("@contrasenia", contrasenia);
+                        cmd.Parameters.AddWithValue("@contrasenia", contrasenia.Trim());
                         cmd.Parameters.AddWithValue("@isAdmin", isAdmin);
 
                         int filasAfectadas = cmd.ExecuteNonQuery(); // Ejecutamos la consulta
@@ -823,7 +816,7 @@ namespace ModeloBdClases.BaseDatos
             {
                 connection.Open();
 
-                string query = "INSERT INTO tratamientos (nombre, fecha_inicio, fecha_fin, diagnostico_id) " +
+                string query = "INSERT INTO Tratamientos (nombre, fecha_inicio, fecha_fin, diagnostico_id) " +
                                "VALUES (@nombre, @inicio, @fin, @diagId); SELECT LAST_INSERT_ID();";
 
                 using (var command = new MySqlCommand(query, connection))
@@ -861,7 +854,7 @@ namespace ModeloBdClases.BaseDatos
             {
                 connection.Open();
 
-                string query = "SELECT id, nombre, fecha_inicio, fecha_fin FROM tratamientos WHERE diagnostico_id = @idDiagnostico";
+                string query = "SELECT id, nombre, fecha_inicio, fecha_fin FROM Tratamientos WHERE diagnostico_id = @idDiagnostico";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
@@ -908,7 +901,7 @@ namespace ModeloBdClases.BaseDatos
                     conexion.Open();
 
                     // Verificamos si el tratamiento existe antes de eliminar
-                    string checkQuery = "SELECT COUNT(*) FROM tratamientos WHERE id = @idTratamiento";
+                    string checkQuery = "SELECT COUNT(*) FROM Tratamientos WHERE id = @idTratamiento";
                     using (MySqlCommand checkCmd = new MySqlCommand(checkQuery, conexion))
                     {
                         checkCmd.Parameters.AddWithValue("@idTratamiento", idTratamiento);
@@ -963,7 +956,7 @@ namespace ModeloBdClases.BaseDatos
                                 m.id AS medicamento_id, 
                                 m.nombre AS medicamento_nombre, 
                                 m.descripcion AS medicamento_descripcion
-                         FROM tratamiento_medicamentos tm
+                         FROM Tratamiento_Medicamentos tm
                          JOIN Medicamentos m ON tm.medicamento_id = m.id
                          WHERE tm.tratamiento_id = @idTratamiento";
 
@@ -1103,7 +1096,7 @@ namespace ModeloBdClases.BaseDatos
                 await conexion.OpenAsync();
 
                 // Definimos la consulta SQL para eliminar la nota de evolución por su ID
-                string query = "DELETE FROM notas_evolucion WHERE id = @idNota";
+                string query = "DELETE FROM Notas_Evolucion WHERE id = @idNota";
 
                 // Creamos el comando SQL con la consulta y la conexión
                 using (var cmd = new MySqlCommand(query, conexion))
@@ -1137,7 +1130,7 @@ namespace ModeloBdClases.BaseDatos
             using (MySqlConnection conn = BdApi.ConexionBd())
             {
                 conn.Open();
-                string query = "SELECT id, nombre, descripcion FROM medicamentos";
+                string query = "SELECT id, nombre, descripcion FROM Medicamentos";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
@@ -1206,7 +1199,7 @@ namespace ModeloBdClases.BaseDatos
         /// <param name="instrucciones">Instrucciones de uso</param>
         public void GuardarTratamientoMedicamento(int idTratamiento, int idMedicamento, string instrucciones)
         {
-            string query = "INSERT INTO tratamiento_medicamentos (tratamiento_id, medicamento_id, instrucciones) VALUES (@idTratamiento, @idMedicamento, @instrucciones)";
+            string query = "INSERT INTO Tratamiento_Medicamentos (tratamiento_id, medicamento_id, instrucciones) VALUES (@idTratamiento, @idMedicamento, @instrucciones)";
 
             using (MySqlConnection conn = BdApi.ConexionBd())
             {

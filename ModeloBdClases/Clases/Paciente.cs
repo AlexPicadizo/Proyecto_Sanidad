@@ -43,6 +43,12 @@ namespace ModeloBdClases.Clases
         #endregion
 
         #region CONSTRUCTORES
+        public Paciente()
+        {
+            // Constructor por defecto necesario para serialización, bindings y pruebas
+        }
+
+
         /// <summary>
         /// Constructor principal que inicializa un paciente con los datos necesarios.
         /// </summary>
@@ -85,7 +91,7 @@ namespace ModeloBdClases.Clases
         public string Dni
         {
             get => dni;
-            set => dni = ValidadorDatos.ComprobarDni(value);
+            set => dni = ValidadorDatos.ComprobarDni(value.Replace("-", ""));
         }
 
         public string GrupoSanguineo

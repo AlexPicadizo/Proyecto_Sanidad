@@ -9,40 +9,14 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!-- Header con título y botón de logout -->
-            <Grid ColumnDefinitions="*,Auto,*" VerticalOptions="Start">
-                <!-- Título principal (centrado en el grid) -->
-                <Label Text="Panel de Administración"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="3"
-                       FontSize="26"
-                       FontAttributes="Bold"
-                       TextColor="#1565C0"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center" />
+            <!-- Header con título -->
+            <Label Text="Panel de Administración"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   TextColor="#1565C0"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start" />
 
-                <!-- Botón de Logout (alineado a la derecha) -->
-                <Frame Grid.Column="2"
-                       Padding="10"
-                       CornerRadius="12"
-                       BackgroundColor="#E3F2FD"
-                       BorderColor="#90CAF9"
-                       HasShadow="False"
-                       HeightRequest="40"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnLogoutClicked" />
-                    </Frame.GestureRecognizers>
-                    <HorizontalStackLayout Spacing="5">
-                        <Image Source="logout.png" HeightRequest="20" />
-                        <Label Text="Cerrar sesión"
-                               FontSize="14"
-                               TextColor="#0D47A1"
-                               VerticalTextAlignment="Center" />
-                    </HorizontalStackLayout>
-                </Frame>
-            </Grid>
             <!-- Subtítulo -->
             <Label Text="Gestión de cuentas de usuario"
                    FontSize="16"
@@ -108,8 +82,28 @@
                                TextColor="#FF8F00" />
                     </VerticalStackLayout>
                 </Frame>
-
             </Grid>
+
+            <!-- Botón de Logout (al final de la página) -->
+            <Frame Padding="10"
+                   CornerRadius="12"
+                   BackgroundColor="#E3F2FD"
+                   BorderColor="#90CAF9"
+                   HasShadow="False"
+                   HeightRequest="50"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="End">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLogoutClicked" />
+                </Frame.GestureRecognizers>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                    <Image Source="logout.png" HeightRequest="20" />
+                    <Label Text="Cerrar sesión"
+                           FontSize="14"
+                           TextColor="#0D47A1"
+                           VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+            </Frame>
 
             <!-- Pie -->
             <Label Text="Sistema de Administración Sanitaria v1.0"

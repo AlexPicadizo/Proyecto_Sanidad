@@ -109,49 +109,46 @@ public partial class AgregarPacientes : ContentPage
     {
         try
         {
-            // Obtener el ID del usuario logueado desde las preferencias
             int usuarioId = Preferences.Get("UsuarioId", 0);
-
-            // Validar que el usuario esté logueado
             if (usuarioId == 0)
-            {
                 throw new Exception("No se pudo obtener el ID del usuario.");
-            }
 
-            // Obtener los datos del formulario
-            string nombre = entryNombre.Text;
-            string apellidos = entryApellidos.Text;
-            int edad = int.Parse(entryEdad.Text);
-            string dni = entryDni.Text;
-            string grupoSanguineo = pickerGrupoSanguineo.SelectedItem.ToString();
-            DateTime fechaIngreso = datePickerIngreso.Date;
+            if (!int.TryParse(entryEdad.Text, out int edad))
+                throw new Exception("Edad inválida.");
 
-            // Crear una instancia del método de base de datos
+            if (pickerGrupoSanguineo.SelectedItem == null)
+                throw new Exception("Debes seleccionar un grupo sanguíneo.");
+
+            Paciente nuevoPaciente = new Paciente
+            {
+                Nombre = entryNombre.Text,
+                Apellidos = entryApellidos.Text,
+                Edad = edad,
+                Dni = entryDni.Text,
+                GrupoSanguineo = pickerGrupoSanguineo.SelectedItem?.ToString(),
+                FechaIngreso = datePickerIngreso.Date
+            };
+
             MetodosBD metodosBD = new MetodosBD();
 
-            // Ejecutar la inserción del paciente en segundo plano
-            bool exito = await Task.Run(() => metodosBD.AgregarPaciente(nombre, apellidos, edad, dni, grupoSanguineo, fechaIngreso, usuarioId));
+            bool exito = await Task.Run(() =>
+                metodosBD.AgregarPaciente(nuevoPaciente.Nombre, nuevoPaciente.Apellidos, nuevoPaciente.Edad,
+                                           nuevoPaciente.Dni, nuevoPaciente.GrupoSanguineo,
+                                           nuevoPaciente.FechaIngreso, usuarioId));
 
             if (exito)
             {
-                // Enviar un mensaje para actualizar la lista de pacientes
                 MessagingCenter.Send(this, "ActualizarPacientes");
-
-                // Mostrar un mensaje de éxito
                 await DisplayAlert("Éxito", "Paciente agregado correctamente", "OK");
-
-                // Limpiar los campos del formulario
                 LimpiarFormulario();
             }
             else
             {
-                // Mostrar mensaje de error si la inserción falla
                 await DisplayAlert("Error", "No se pudo agregar el paciente", "OK");
             }
         }
         catch (Exception error)
         {
-            // Mostrar un mensaje en caso de excepción
             await DisplayAlert("Error", $"Error: {error.Message}", "Ok");
         }
     }

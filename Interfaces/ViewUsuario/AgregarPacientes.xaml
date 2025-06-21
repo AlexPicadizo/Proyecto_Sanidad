@@ -28,28 +28,6 @@
                         Text="Bienvenido/a, Doctor/a" />
                 </Frame>
 
-                <!-- Botón de Logout - Versión discreta -->
-                <Frame Grid.Column="1"
-                       Padding="10"
-                       CornerRadius="12"
-                       BackgroundColor="Transparent"
-                       BorderColor="#B2DFDB"
-                       HasShadow="False"
-                       HeightRequest="40"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End"
-                       Margin="0,0,10,10">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnLogoutClicked" />
-                    </Frame.GestureRecognizers>
-                    <HorizontalStackLayout Spacing="5">
-                        <Image Source="logout.png" HeightRequest="20" />
-                        <Label Text="Cerrar sesión"
-                               FontSize="14"
-                               TextColor="#2C7A7B"
-                               VerticalTextAlignment="Center" />
-                    </HorizontalStackLayout>
-                </Frame>
             </Grid>
             <!-- Encabezado con fondo destacado -->
             <Frame
@@ -182,6 +160,27 @@
                             HorizontalOptions="Fill" />
                     </VerticalStackLayout>
                 </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botón de Logout (ubicado justo antes del botón GUARDAR PACIENTE) -->
+            <Frame Padding="10"
+                   CornerRadius="12"
+                   BackgroundColor="#E0F2F1"
+                   BorderColor="#B2DFDB"
+                   HasShadow="False"
+                   HeightRequest="50"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="End">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLogoutClicked" />
+                </Frame.GestureRecognizers>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                    <Image Source="logout.png" HeightRequest="20" />
+                    <Label Text="Cerrar sesión"
+               FontSize="14"
+               TextColor="#2C7A7B"
+               VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
             </Frame>
 
             <!-- Botón para guardar datos del paciente -->

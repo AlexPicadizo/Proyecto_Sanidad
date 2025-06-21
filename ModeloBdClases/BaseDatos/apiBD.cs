@@ -24,8 +24,9 @@ namespace ModeloBdClases.BaseDatos
         /// </summary>
         public apiBD()
         {
+           
             // Comentado: Conexión a una base de datos remota
-            /*server = "2131e.h.filess.io";
+            server = "2131e.h.filess.io";
             port = "61002";
             baseDatos = "sanidadDB_pondbarkam";
             usuario = "sanidadDB_pondbarkam";
@@ -33,18 +34,19 @@ namespace ModeloBdClases.BaseDatos
 
             // Construcción de la cadena de conexión remota
             conexion = $"Server={server}; Database={baseDatos}; " +
-                       $"User Id={usuario}; Password={contrasenia}; Port={port};";*/
-
-            // Establezco la conexión a la base de datos local (comentada la opción remota)
-            server = "localhost"; // Servidor local
-            port = "3306";        // Puerto por defecto para MySQL
-            baseDatos = "sanidad_db"; // Nombre de la base de datos local
-            usuario = "root";    // Usuario para la base de datos
-            contrasenia = "Miguelonguapo7)"; // Contraseña del usuario
-
-            // Construcción de la cadena de conexión usando los parámetros anteriores
-            conexion = $"Server={server}; Database={baseDatos}; " +
                        $"User Id={usuario}; Password={contrasenia}; Port={port};";
+
+            /*
+       // Establezco la conexión a la base de datos local (comentada la opción remota)
+       server = "localhost"; // Servidor local
+       port = "3306";        // Puerto por defecto para MySQL
+       baseDatos = "sanidad_db"; // Nombre de la base de datos local
+       usuario = "root";    // Usuario para la base de datos
+       contrasenia = "Miguelonguapo7)"; // Contraseña del usuario
+
+       // Construcción de la cadena de conexión usando los parámetros anteriores
+       conexion = $"Server={server}; Database={baseDatos}; " +
+                  $"User Id={usuario}; Password={contrasenia}; Port={port};";*/
         }
         #endregion
 

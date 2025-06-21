@@ -92,50 +92,17 @@
                                         TextColor="#4A6FA5"/>
                                 </HorizontalStackLayout>
 
-                                <!-- 
-                                    Contraseña visible/oculta:
-                                    - Dos layouts con IsVisible enlazado al Switch (passwordToggle).
-                                    - El primer layout muestra el Binding Contrasenia cuando IsToggled=true.
-                                    - El segundo layout muestra texto vacío cuando IsToggled=false,
-                                      usando un InverseBooleanConverter para invertir la visibilidad.
-                                -->
-                                <Grid>
-                                    <HorizontalStackLayout
-                                        Spacing="8"
-                                        IsVisible="{Binding Source={x:Reference passwordToggle}, Path=IsToggled}">
-                                        <Label Text="🔒" FontSize="14" VerticalOptions="Center"/>
-                                        <Label
-                                            Text="{Binding Contrasenia}"
-                                            FontSize="14"
-                                            TextColor="LightGray"
-                                            FontAttributes="Italic"/>
-                                    </HorizontalStackLayout>
-
-                                    <HorizontalStackLayout
-                                        Spacing="8"
-                                        IsVisible="{Binding Source={x:Reference passwordToggle}, Path=IsToggled, Converter={StaticResource InverseBooleanConverter}}">
-                                        <Label Text="🔒" FontSize="14" VerticalOptions="Center"/>
-                                        <Label
-                                            Text=""
-                                            FontSize="14"
-                                            TextColor="LightGray"
-                                            FontAttributes="Italic"/>
-                                    </HorizontalStackLayout>
-                                </Grid>
-
-                                <!-- Toggle para alternar la visibilidad de la contraseña -->
-                                <HorizontalStackLayout Spacing="5" HorizontalOptions="End">
+                                <!-- Contraseña -->
+                                <HorizontalStackLayout Spacing="5" IsVisible="True">
+                                    <Label Text="🔒" FontSize="14"/>
                                     <Label
-                                        Text="Mostrar contraseña"
-                                        FontSize="12"
-                                        TextColor="Black"
-                                        VerticalOptions="Center"/>
-                                    <Switch
-                                        x:Name="passwordToggle"
-                                        ThumbColor="#2A7FBA"
-                                        OnColor="#2A7FBA"/>
+                                            Text="{Binding Contrasenia, StringFormat='{0}'}"
+                                            FontSize="14"
+                                            TextColor="LightGray"
+                                            FontAttributes="Italic"/>
                                 </HorizontalStackLayout>
-
+                                
+                               
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>

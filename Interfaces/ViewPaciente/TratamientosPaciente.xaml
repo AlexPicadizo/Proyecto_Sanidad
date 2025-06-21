@@ -39,16 +39,19 @@
                     <CollectionView x:Name="listaMedicamentosDisponibles"
                                     HeightRequest="150"
                                     SelectionMode="Single"
-                                    SelectionChanged="OnSeleccionarMedicamento">
+                                    SelectionChanged="OnSeleccionarMedicamento"
+                                    ItemsSource="{Binding MedicamentosDisponibles}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <!-- Cada medicamento mostrado como una tarjeta -->
-                                <Frame Padding="8" Margin="4"
-                                       BackgroundColor="#EDF2F7"
-                                       BorderColor="#CBD5E0"
-                                       CornerRadius="6">
-                                    <Label Text="{Binding Nombre}" TextColor="#2D3748" />
-                                </Frame>
+                                <Grid Padding="10"
+                                      BackgroundColor="#EDF2F7"
+                                      Margin="4"
+                                      VerticalOptions="Center">
+                                    <Label Text="{Binding Nombre}"
+                                           FontSize="14"
+                                           TextColor="#2D3748"
+                                           VerticalOptions="Center" />
+                                </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

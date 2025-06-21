@@ -61,7 +61,7 @@ namespace ModeloBdClases.Clases
         public string Nombre
         {
             get => nombre;
-            set => nombre = ValidadorDatos.ComprobarNombreAlergia(nombre);
+            set => nombre = value; // ValidadorDatos.ComprobarNombreAlergia(nombre);
         }
 
         #endregion

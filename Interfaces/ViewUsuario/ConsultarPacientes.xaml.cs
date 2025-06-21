@@ -44,22 +44,22 @@ public partial class ConsultarPacientes : ContentPage, INotifyPropertyChanged
     #region Constructor
     public ConsultarPacientes()
     {
-        InitializeComponent(); // Inicializa los componentes visuales (XAML).
-        BindingContext = this; // Establece el contexto de enlace de datos a esta clase para que los bindings en XAML funcionen.
+        InitializeComponent();
 
-        PacientesCollection = new ObservableCollection<Paciente>(); // Inicializa la colección observable de pacientes.
-        collectionViewPacientes.ItemsSource = PacientesCollection; // Asocia la colección al CollectionView para su visualización.
+        PacientesCollection = new ObservableCollection<Paciente>();
+        RefreshCommand = new Command(() => { });
 
-        // Inicializa el comando de refresco (pull-to-refresh).
-        RefreshCommand = new Command(RefrescarPacientes);
+        BindingContext = this;
 
-        // Carga inicial de pacientes desde la base de datos.
-        CargarPacientes();
-
-        // Suscripción a un evento de MessagingCenter para actualizar la lista de pacientes cuando se agreguen nuevos pacientes.
-        MessagingCenter.Subscribe<AgregarPacientes>(this, "ActualizarPacientes", (sender) =>
+        // AÑADE UN PACIENTE A MANO
+        PacientesCollection.Add(new Paciente
         {
-            CargarPacientes(); // Recarga los pacientes cuando se recibe el mensaje "ActualizarPacientes".
+            Nombre = "Lucas",
+            Apellidos = "Prueba",
+            Dni = "12345678Z",
+            GrupoSanguineo = "O+",
+            Edad = 30,
+            FechaIngreso = DateTime.Now
         });
     }
 

@@ -3,24 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Interfaces.ViewPaciente.AlergiasPaciente">
 
-    <!-- Contenedor principal que da estilo a todo el contenido -->
     <Frame CornerRadius="15" Padding="25" Margin="20"
            BackgroundColor="White" BorderColor="#4299E1"
            HasShadow="True">
 
-        <!-- Layout vertical que organiza todos los controles visuales -->
         <VerticalStackLayout Spacing="20">
 
             <!-- TÍTULO -->
             <Label Text="Gestión de Alergias"
-                   FontSize="24" FontAttributes="Bold" 
+                   FontSize="24"
+                   FontAttributes="Bold"
                    HorizontalOptions="Center"
                    TextColor="#2C7A7B"
                    Margin="0,0,0,20"/>
 
             <!-- BARRA DE BÚSQUEDA -->
-            <!-- Este SearchBar se usa para filtrar la lista de alergias -->
-            <!-- El texto que escribe el usuario podría estar enlazado con una propiedad en el ViewModel -->
             <SearchBar x:Name="searchBar"
                        Placeholder="Buscar alergia..."
                        FontSize="16"
@@ -29,9 +26,7 @@
                        SearchButtonPressed="OnSearchAlergia"
                        TextChanged="OnSearchTextChanged" />
 
-            <!-- LISTA DE ALERGIAS FILTRADAS -->
-            <!-- ItemsSource está enlazado a una colección en el ViewModel: AlergiasFiltradas -->
-            <!-- SelectionChanged enlaza con un método que guarda la alergia seleccionada -->
+            <!-- LISTA DE ALERGIAS FILTRADAS (SELECCIÓN FUNCIONAL) -->
             <CollectionView x:Name="alergiasListView"
                             HeightRequest="180"
                             SelectionMode="Single"
@@ -39,23 +34,21 @@
                             ItemsSource="{Binding AlergiasFiltradas}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <!-- Cada alergia se muestra dentro de una tarjeta visual -->
-                        <!-- Label muestra el nombre de la alergia con binding a la propiedad "Nombre" -->
-                        <Frame Padding="10"
-                               Margin="5"
-                               BackgroundColor="White"
-                               BorderColor="#D0D3D4"
-                               CornerRadius="8">
-                            <Label Text="{Binding Nombre}" 
+                        <Grid Padding="10"
+                              BackgroundColor="White"
+                              Margin="5"
+                              Background="#F8F9FA"
+                              VerticalOptions="Center">
+                            <Label Text="{Binding Nombre}"
                                    FontSize="14"
-                                   TextColor="#34495E" />
-                        </Frame>
+                                   TextColor="#34495E"
+                                   VerticalOptions="Center" />
+                        </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- BOTÓN PARA AGREGAR ALERGIA SELECCIONADA -->
-            <!-- Se activa cuando el usuario ha seleccionado una alergia de la lista superior -->
+            <!-- BOTÓN PARA AGREGAR ALERGIA -->
             <Button Text="Agregar Alergia Seleccionada"
                     x:Name="btnAgregar"
                     Clicked="OnAgregarAlergia"
@@ -65,29 +58,26 @@
                     CornerRadius="8"
                     HeightRequest="40" />
 
-            <!-- TÍTULO DE LA SECCIÓN INFERIOR -->
+            <!-- TÍTULO DE LA LISTA INFERIOR -->
             <Label Text="Alergias del paciente:"
                    FontSize="18"
                    FontAttributes="Bold"
                    TextColor="#2C3E50"
                    Margin="0,20,0,0" />
 
-            <!-- LISTA DE ALERGIAS YA SELECCIONADAS POR EL PACIENTE -->
-            <!-- ItemsSource enlazado a AlergiasSeleccionadas en el ViewModel -->
+            <!-- LISTA DE ALERGIAS SELECCIONADAS -->
             <CollectionView x:Name="alergiasSeleccionadasView"
                             HeightRequest="280"
                             ItemsSource="{Binding AlergiasSeleccionadas}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <!-- Grid con dos columnas: nombre de alergia + botón eliminar -->
-                        <!-- Label muestra la propiedad "Nombre" de cada objeto en la lista -->
                         <Grid Padding="10"
                               BackgroundColor="White"
                               Margin="5"
                               ColumnDefinitions="*,Auto">
-                            <Label Text="{Binding Nombre}" 
+                            <Label Text="{Binding Nombre}"
                                    FontSize="15"
-                                   TextColor="#34495E" 
+                                   TextColor="#34495E"
                                    VerticalOptions="Center" />
                             <Button Text="Eliminar"
                                     Clicked="OnEliminarAlergia"
@@ -104,5 +94,4 @@
 
         </VerticalStackLayout>
     </Frame>
-
 </ContentView>
